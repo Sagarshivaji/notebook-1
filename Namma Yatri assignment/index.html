@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frictionless Civic Complaint · Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       ============================================================ */
+    :root {
+      --bg: #FAFAFC;
+      --bg-surface: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --card-border: rgba(0, 0, 0, 0.08);
+      --text-primary: #1A1A24;
+      --text-secondary: #4A4A5A;
+      --text-tertiary: #8A8A9A;
+      --accent: #005F3F;
+      --accent-soft: rgba(37, 99, 235, 0.12);
+      --success: #10B981;
+      --danger: #EF4444;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --max-width: 1280px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    body.dark-mode {
+      --bg: #0d0d16;
+      --bg-surface: rgba(255, 255, 255, 0.04);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f0f0f5;
+      --text-secondary: #a0a0b0;
+      --text-tertiary: #6a6a7a;
+      --accent: #0CB97F;
+      --accent-soft: rgba(59, 130, 246, 0.15);
+    }
+    body.dark-mode .card {
+      box-shadow: none;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 0 24px;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ============================================================
+       TYPOGRAPHY
+       ============================================================ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text-primary);
+    }
+    h1 { font-size: 2.8rem; letter-spacing: -0.02em; }
+    h2 { font-size: 1.8rem; letter-spacing: -0.01em; }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1rem; }
+
+    .body-large { font-size: 1.1rem; line-height: 1.7; }
+    .body-base { font-size: 0.98rem; line-height: 1.7; }
+    .small { font-size: 0.85rem; line-height: 1.6; }
+    .text-secondary { color: var(--text-secondary); }
+    .text-tertiary { color: var(--text-tertiary); }
+    .text-primary { color: var(--text-primary); }
+    .accent-text { color: var(--accent); }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 0 80px;
+    }
+
+    /* ============================================================
+       HERO SECTION — now inside Overview, with image at the top
+       ============================================================ */
+    .hero {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 48px;
+    }
+    .hero-image {
+      width: 100%;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 32px;
+      border: 1px solid var(--card-border);
+      background: var(--bg-surface);
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .hero .caption {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hero h1 { margin: 16px 0 12px; max-width: 840px; }
+    .hero p {
+      max-width: 680px;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    /* Info bar — kept but now below the hero */
+    .info-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 48px;
+    }
+    .info-item span {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+    .info-item strong {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .project-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .sticky-nav {
+      position: sticky;
+      top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sticky-nav a {
+      font-size: 0.82rem;
+      padding: 7px 12px;
+      border-radius: 8px;
+      color: var(--text-tertiary);
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+    .sticky-nav a:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface);
+    }
+    .sticky-nav a.active {
+      color: #ffffff;
+      background: var(--accent);
+    }
+
+    .project-content-block {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+    .content-section { scroll-margin-top: 32px; }
+
+    /* ============================================================
+       COMPONENTS
+       ============================================================ */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .card-sm {
+      padding: 18px 20px;
+      border-radius: var(--radius-sm);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
+      background: var(--card-bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--card-border);
+    }
+    .flow-step-num {
+      font-weight: 800;
+      color: var(--accent);
+      min-width: 28px;
+      font-size: 1.1rem;
+    }
+    .flow-arrow {
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 1.1rem;
+      line-height: 1;
+      margin: -2px 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-left: 2px solid var(--card-border);
+      margin-left: 8px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .timeline-item:last-child { padding-bottom: 0; border-left-color: transparent; }
+    .timeline-dot {
+      position: absolute;
+      left: -9px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--card-border);
+    }
+    .timeline-dot.done { background: var(--success); }
+    .timeline-dot.active { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+    .timeline-dot.pending { background: var(--bg-surface); border: 2px solid var(--card-border); }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+      vertical-align: top;
+    }
+    .compare-table thead th {
+      background: var(--card-bg);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+    }
+    .compare-table thead th:last-child { color: var(--accent); }
+    .compare-table tbody tr:last-child td { border-bottom: none; }
+    .compare-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .qa-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+    .qa-card h4 { font-weight: 700; font-size: 0.98rem; margin-bottom: 8px; }
+    .qa-card p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.65; }
+
+    .mb-0 { margin-bottom: 0; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-20 { margin-bottom: 20px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-20 { margin-top: 20px; }
+    .mt-24 { margin-top: 24px; }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      font-size: 0.82rem;
+    }
+
+    .img-caption {
+      display: block;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--card-border);
+      background: var(--card-bg);
+    }
+
+    /* Accordion */
+    .accordion-item {
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 10px;
+      background: var(--card-bg);
+    }
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .accordion-header:hover { background: var(--bg-surface); }
+    .accordion-header .material-icons {
+      font-size: 1.2rem;
+      transition: transform 0.25s ease;
+      color: var(--text-tertiary);
+    }
+    .accordion-item.open .accordion-header .material-icons {
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 20px;
+    }
+    .accordion-item.open .accordion-body {
+      max-height: 700px;
+      padding: 0 20px 20px 20px;
+    }
+
+    .footer {
+      border-top: 1px solid var(--card-border);
+      padding: 32px 0 24px;
+      margin-top: 64px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .project-layout { grid-template-columns: 1fr; gap: 32px; }
+      .sticky-nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--card-border);
+      }
+      .sticky-nav a {
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        padding: 6px 10px;
+        font-size: 0.78rem;
+      }
+      .sticky-nav a.active { border-left: none; border-bottom-color: var(--accent); }
+      .grid-2 { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      body { padding: 0 16px; }
+      .compare-table { font-size: 0.78rem; }
+      .compare-table th, .compare-table td { padding: 8px 10px; }
+      .compare-table tbody td:first-child { white-space: normal; }
+    }
+    @media (max-width: 400px) {
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .card { padding: 16px; }
+      .grid-3, .grid-auto { grid-template-columns: 1fr; }
+      .info-bar { grid-template-columns: 1fr; gap: 12px; }
+      .project-content-block { gap: 40px; }
+      .container { padding: 24px 0 60px; }
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: transform 0.2s;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.05);
+    }
+    @media (max-width: 600px) {
+      .theme-toggle {
+        top: 16px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <span class="material-icons" id="themeIcon">dark_mode</span>
+  </button>
+
+  <div class="container">
+
+    <!-- Back to Portfolio -->
+    <div style="margin-bottom: 32px;">
+      <a href="https://sagarshivaji.github.io/SagarShivaji2.0/" style="display:inline-flex; align-items:center; gap:8px; color:var(--text-secondary); font-weight:500; font-size:0.95rem; text-decoration:none;">
+        <span class="material-icons" style="font-size:1.1rem;">arrow_back</span>
+        Back to Portfolio
+      </a>
+    </div>
+
+    <!-- ============================================================
+         PROJECT LAYOUT
+         ============================================================ -->
+    <div class="project-layout">
+
+      <!-- Sticky Nav -->
+      <nav class="sticky-nav" id="stickyNav">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#challenge">Challenge</a>
+        <a href="#observed">What I Observed</a>
+        <a href="#direction">Design Direction</a>
+        <a href="#flow">Core Flow</a>
+        <a href="#decisions">Key Decisions</a>
+        <a href="#final-screens">Final Screens</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#mvp">MVP vs Future</a>
+        <a href="#tradeoffs">Assumptions</a>
+        <a href="#metrics">Success Metrics</a>
+        <a href="#prototype">Prototype</a>
+        <a href="#reflection">Reflection</a>
+      </nav>
+
+      <!-- Content -->
+      <div class="project-content-block">
+
+        <!-- ===== OVERVIEW (includes HERO with image at top) ===== -->
+        <section id="overview" class="content-section">
+
+          <!-- HERO block inside overview -->
+          <header class="hero">
+
+            <span class="caption">Product Design · 2026</span>
+            <h1>Frictionless Civic Complaint</h1>
+            <p style="margin-bottom: 32px;">
+              A simpler, safer and more transparent way to report civic issues —
+              removing administrative complexity from the citizen and moving it into the system.
+            </p>
+
+            <!-- Hero image -->
+            <div class="hero-image" style="margin-bottom: 0;">
+              <img src="images/hero-image.png" alt="Frictionless Civic Complaint hero mockup" />
+            </div>
+
+          </header>
+
+          <!-- Info bar now part of overview, right after hero -->
+          <div class="info-bar">
+            <div class="info-item">
+              <span>Role</span>
+              <strong>Product Designer</strong>
+            </div>
+            <div class="info-item">
+              <span>Type</span>
+              <strong>Design   01</strong>
+            </div>
+            <div class="info-item">
+              <span>Platform</span>
+              <strong>Mobile (iOS / Android)</strong>
+            </div>
+            <div class="info-item">
+              <span>Tools</span>
+              <strong>Figma · FigJam</strong>
+            </div>
+          </div>
+
+          <h2 class="mb-16">Overview</h2>
+          <div style="margin-bottom: 24px;">
+            <img src="images/storyboard.png" alt="Overview user flow" style="width:100%; border-radius:12px; border:1px solid var(--card-border);" />
+          </div>
+          <div>
+            <p class="body-large text-primary mb-16">
+              Citizens encounter civic issues every day — potholes, garbage dumping, broken streetlights, water leaks and damaged footpaths. Reporting them, however, can feel like completing a government form rather than performing a simple civic action.
+            </p>
+            <p class="body-base text-secondary">
+              This project redesigns the civic reporting experience around a single principle: <strong>ask the citizen only what they know, and let the system handle the administrative complexity.</strong> The result is a reporting flow that takes seconds, a tracking model that separates submission from verification, and a public layer that shows civic progress without exposing the people who reported it.
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== CHALLENGE ===== -->
+        <section id="challenge" class="content-section">
+          <h2 class="mb-16">The Challenge</h2>
+          <p class="body-base text-secondary mb-20">
+            Citizens need a simple way to report issues such as potholes, garbage, water leaks, and broken streetlights. My focus was to design a flow where users can:
+          </p>
+          <div class="card mb-20" style="border-color:var(--accent); text-align:center; padding:28px;">
+            <p style="font-size:1.4rem; font-weight:700; letter-spacing:0.02em;">Report → Submit → Track → Resolve</p>
+          </div>
+          <div class="card card-sm" style="display:flex; align-items:flex-start; gap:14px;">
+            <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">psychology</span>
+            <p class="small text-secondary" style="line-height:1.6;">
+              <strong class="text-primary">The problem I focused on:</strong> Users should always know where to start, what to do next, and what happens after submitting.
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== WHAT I OBSERVED ===== -->
+        <section id="observed" class="content-section">
+          <h2 class="mb-16">What I Observed</h2>
+          <p class="body-base text-secondary mb-20">
+            From the existing apps I reviewed, I observed a consistent set of friction points that appear before a citizen ever reaches the actual complaint flow.
+          </p>
+          <div style="margin-bottom: 24px;">
+            <img src="images/competitors.png" alt="Competitor analysis" style="width:100%; border-radius:12px; border:1px solid var(--card-border);" />
+          </div>
+          <div style="overflow-x:auto;" class="mb-20">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Observation</th>
+                  <th>User problem</th>
+                  <th>Opportunity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Too many options</td>
+                  <td>“Where do I start?”</td>
+                  <td>Strong primary CTA</td>
+                </tr>
+                <tr>
+                  <td>No progress indicator</td>
+                  <td>“What comes next?”</td>
+                  <td>Stepper</td>
+                </tr>
+                <tr>
+                  <td>Unclear post-submission</td>
+                  <td>“What happens now?”</td>
+                  <td>Tracking</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card" style="border-color:var(--accent); text-align:center; padding:24px;">
+            <p class="small font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.06em; color:var(--accent);">My takeaway</p>
+            <p style="font-size:1.1rem; font-weight:600;">The problem wasn't only reporting. It was the lack of direction throughout the journey.</p>
+          </div>
+        </section>
+
+        <!-- ===== DESIGN DIRECTION ===== -->
+        <section id="direction" class="content-section">
+          <h2 class="mb-16">Design Direction</h2>
+          <p class="body-base text-secondary mb-20">
+            Instead of building a long complaint form, I broke the experience into small, understandable steps.
+          </p>
+          <div style="margin-bottom: 24px;">
+            <img src="images/steps.png" alt="Design direction steps" style="width:100%; border-radius:12px; border:1px solid var(--card-border);" />
+          </div>
+          <div class="grid-auto">
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">01</span>
+              <h4 class="mb-8">Guide</h4>
+              <p class="small text-secondary">Make the next action obvious.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">02</span>
+              <h4 class="mb-8">Simplify</h4>
+              <p class="small text-secondary">Ask only for essential information.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">03</span>
+              <h4 class="mb-8">Use the system</h4>
+              <p class="small text-secondary">Use location and visual inputs wherever possible.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">04</span>
+              <h4 class="mb-8">Build confidence</h4>
+              <p class="small text-secondary">Show users what they're submitting.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">05</span>
+              <h4 class="mb-8">Keep them informed</h4>
+              <p class="small text-secondary">Continue the experience after submission.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== CORE FLOW ===== -->
+        <section id="flow" class="content-section">
+          <h2 class="mb-16">Core Flow</h2>
+          <p class="body-base text-secondary mb-20">The full journey — from opening the app to resolution.</p>
+          <div style="margin-bottom:32px;">
+            <img src="images/userflow.png" alt="User flow diagram" style="width:100%; border-radius:12px; border:1px solid var(--card-border);" />
+          </div>
+           
+
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Why this order?</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary" style="line-height:1.7;">
+                Location → What happened → Evidence → Confirmation → Tracking. This keeps the main journey simple while explaining the product thinking. The issue exists at a physical location, so location comes first. Then the citizen describes what happened and provides evidence. Review builds confidence before submission, and tracking continues the experience after.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== KEY DESIGN DECISIONS ===== -->
+        <section id="decisions" class="content-section">
+          <h2 class="mb-16">Key Design Decisions</h2>
+          <p class="body-base text-secondary mb-20">
+            Expand each decision to understand the reasoning behind the design.
+          </p>
+
+          <!-- 01 Location First -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>01. Location First</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> The issue exists at a physical location, so I wanted the system to handle location detection instead of making users manually explain where they are.
+              </p>
+              <p class="small text-secondary" style="line-height:1.7;">
+                <strong class="text-primary">Design decision:</strong> Current location + change/search location.
+              </p>
+            </div>
+          </div>
+
+          <!-- 02 Stepper -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>02. Stepper</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> I wanted users to know:
+              </p>
+              <ul style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+                <li class="small text-secondary">• Where they are</li>
+                <li class="small text-secondary">• What they've completed</li>
+                <li class="small text-secondary">• What's next</li>
+              </ul>
+              <p class="small text-secondary" style="line-height:1.7;">
+                <strong class="text-primary">Design decision:</strong> Location → Issue → Details → Review
+              </p>
+            </div>
+          </div>
+
+          <!-- 03 Visual Issue Cards -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>03. Visual Issue Cards</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> Cards make issue types easier to scan, while icons help users recognize them quickly.
+              </p>
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Categories:</strong>
+              </p>
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                <span class="tag">Pothole</span>
+                <span class="tag">Garbage</span>
+                <span class="tag">Water Leak</span>
+                <span class="tag">Streetlight</span>
+                <span class="tag">Footpath</span>
+                <span class="tag">Sewage</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04 Photo First -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>04. Photo First, Description Optional</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> A photo can communicate the problem clearly, while not every user may be comfortable writing a detailed description.
+              </p>
+              <p class="small text-secondary" style="line-height:1.7;">
+                <strong class="text-primary">Design decision:</strong> Photo = important · Description = optional
+              </p>
+            </div>
+          </div>
+
+          <!-- 05 Review Before Submit -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>05. Review Before Submit</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> I wanted users to see exactly what they were going to submit and correct anything before sending the report.
+              </p>
+              <p class="small text-secondary" style="line-height:1.7;">
+                <strong class="text-primary">Design decision:</strong> Issue + Location + Photo + Description + Edit
+              </p>
+            </div>
+          </div>
+
+          <!-- 06 Privacy Reassurance -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>06. Privacy Reassurance</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> Some users may hesitate to report an issue if they're concerned about being identified.
+              </p>
+              <p class="small text-secondary" style="line-height:1.7;">
+                <strong class="text-primary">Design decision:</strong> Provide privacy reassurance at the point where the user is about to submit.
+              </p>
+            </div>
+          </div>
+
+          <!-- 07 Report ID + Tracking -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>07. Report ID + Tracking</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Why?</strong> The experience shouldn't end after submission. Users may want to know: Was it verified? Has work started? Is it completed?
+              </p>
+              <p class="small text-secondary mb-12" style="line-height:1.7;">
+                <strong class="text-primary">Tracking:</strong>
+              </p>
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+                <span style="padding:6px 14px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; font-size:0.82rem;">Pending</span>
+                <span class="text-tertiary">→</span>
+                <span style="padding:6px 14px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; font-size:0.82rem;">Under Review</span>
+                <span class="text-tertiary">→</span>
+                <span style="padding:6px 14px; background:var(--card-bg); border:1px solid var(--accent); border-radius:20px; font-size:0.82rem; color:var(--accent);">In Progress</span>
+                <span class="text-tertiary">→</span>
+                <span style="padding:6px 14px; background:var(--card-bg); border:1px solid var(--success); border-radius:20px; font-size:0.82rem;">Resolved</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== FINAL SCREENS ===== -->
+        <section id="final-screens" class="content-section">
+          <h2 class="mb-16">Final Screens</h2>
+          <p class="body-base text-secondary mb-20">
+            High-fidelity UI — the polished experience ready for handoff.
+          </p>
+          <div class="grid-3">
+            <div class="card" style="overflow:hidden; padding:0;">
+              <img src="images/1. Home (High-Fidelity).png" alt="Final — Home screen" style="width:100%; aspect-ratio:9/19; object-fit:cover; background:var(--bg-surface);" />
+              <span class="img-caption">Home — Report an issue + Community progress</span>
+            </div>
+            <div class="card" style="overflow:hidden; padding:0;">
+              <img src="images/2. Location (High-Fidelity).png" alt="Final — Location" style="width:100%; aspect-ratio:9/19; object-fit:cover; background:var(--bg-surface);" />
+              <span class="img-caption">Location selection</span>
+            </div>
+            <div class="card" style="overflow:hidden; padding:0;">
+              <img src="images/3. Issue Type (High-Fidelity).png" alt="Final — Issue Type" style="width:100%; aspect-ratio:9/19; object-fit:cover; background:var(--bg-surface);" />
+              <span class="img-caption">Select issue type</span>
+            </div>
+            <div class="card" style="overflow:hidden; padding:0;">
+              <img src="images/4. Add Details (High-Fidelity).png" alt="Final — Add details" style="width:100%; aspect-ratio:9/19; object-fit:cover; background:var(--bg-surface);" />
+              <span class="img-caption">Add details — photo &amp; optional description</span>
+            </div>
+            <div class="card" style="overflow:hidden; padding:0;">
+              <img src="images/5. Review & Submit (High-Fidelity).png" alt="Final — Review and submit" style="width:100%; aspect-ratio:9/19; object-fit:cover; background:var(--bg-surface);" />
+              <span class="img-caption">Review &amp; submit</span>
+            </div>
+            <div class="card" style="overflow:hidden; padding:0;">
+              <img src="images/6. Submission Success (High-Fidelity).png" alt="Final — Submission Success" style="width:100%; aspect-ratio:9/19; object-fit:cover; background:var(--bg-surface);" />
+              <span class="img-caption">Report successfully received</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PRODUCT ARCHITECTURE ===== -->
+        <section id="architecture" class="content-section">
+          <h2 class="mb-16">Product Architecture</h2>
+          <p class="body-base text-secondary mb-20">
+            The product is structured into four core modules.
+          </p>
+          <div class="grid-2">
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.8rem; display:block; margin-bottom:8px;">campaign</span>
+              <h4 class="mb-12">Reporting Module</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Location</li>
+                <li class="small text-secondary">• Issue Type</li>
+                <li class="small text-secondary">• Details</li>
+                <li class="small text-secondary">• Review</li>
+                <li class="small text-secondary">• Submit</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.8rem; display:block; margin-bottom:8px;">timeline</span>
+              <h4 class="mb-12">Tracking Module</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Report ID</li>
+                <li class="small text-secondary">• Status</li>
+                <li class="small text-secondary">• Timeline</li>
+                <li class="small text-secondary">• Resolution</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.8rem; display:block; margin-bottom:8px;">groups</span>
+              <h4 class="mb-12">Community Module</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Area reports</li>
+                <li class="small text-secondary">• Nearby issues</li>
+                <li class="small text-secondary">• Duplicate awareness</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.8rem; display:block; margin-bottom:8px;">help_outline</span>
+              <h4 class="mb-12">Support Module</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Help</li>
+                <li class="small text-secondary">• Privacy</li>
+                <li class="small text-secondary">• FAQs</li>
+              </ul>
+            </div>
+          </div>
+        
+        </section>
+
+        <!-- ===== MVP VS FUTURE ===== -->
+        <section id="mvp" class="content-section">
+          <h2 class="mb-16">MVP vs Future</h2>
+          <p class="body-base text-secondary mb-20">
+            A simple two-column comparison of what was built versus what is planned.
+          </p>
+          <div class="grid-2">
+            <div class="card">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--accent);">MVP</p>
+              <ul style="display:flex; flex-direction:column; gap:9px;">
+                <li class="small text-secondary">• Location</li>
+                <li class="small text-secondary">• Issue categories</li>
+                <li class="small text-secondary">• Photo upload</li>
+                <li class="small text-secondary">• Optional description</li>
+                <li class="small text-secondary">• Review</li>
+                <li class="small text-secondary">• Report ID</li>
+                <li class="small text-secondary">• Status tracking</li>
+              </ul>
+            </div>
+            <div class="card" style="border-color:var(--accent);">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--accent);">Future</p>
+              <ul style="display:flex; flex-direction:column; gap:9px;">
+                <li class="small text-secondary">• AI issue detection</li>
+                <li class="small text-secondary">• AI-generated description</li>
+                <li class="small text-secondary">• Duplicate detection</li>
+                <li class="small text-secondary">• Smart categorization</li>
+                <li class="small text-secondary">• Automatic department routing</li>
+                <li class="small text-secondary">• Predictive resolution updates</li>
+                <li class="small text-secondary">• Advanced notifications</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-sm mt-20" style="display:flex; align-items:flex-start; gap:14px;">
+            <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">lightbulb</span>
+            <p class="small text-secondary" style="line-height:1.6;">
+              <strong class="text-primary">Why no AI in MVP?</strong> “I wanted to validate the core reporting experience first instead of adding AI just because it was possible.”
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== ASSUMPTIONS & TRADE-OFFS ===== -->
+        <section id="tradeoffs" class="content-section">
+          <h2 class="mb-16">Assumptions &amp; Trade-offs</h2>
+
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Assumptions</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <ul style="display:flex; flex-direction:column; gap:8px;">
+                <li class="small text-secondary">• Users allow location access.</li>
+                <li class="small text-secondary">• Photos can provide useful evidence.</li>
+                <li class="small text-secondary">• Reports may require verification.</li>
+                <li class="small text-secondary">• Multiple users may report the same issue.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Trade-offs</span>
+              <span class="material-icons">expand_more</span>
+            </div>
+            <div class="accordion-body">
+              <ul style="display:flex; flex-direction:column; gap:10px;">
+                <li class="small text-secondary"><strong class="text-primary">Photo vs description</strong> → Photo prioritized, writing optional.</li>
+                <li class="small text-secondary"><strong class="text-primary">AI vs simplicity</strong> → AI moved to future.</li>
+                <li class="small text-secondary"><strong class="text-primary">More information vs cognitive load</strong> → Only essential information shown during reporting.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== SUCCESS METRICS ===== -->
+        <section id="metrics" class="content-section">
+          <h2 class="mb-16">Success Metrics</h2>
+          <p class="body-base text-secondary mb-20">
+            These are proposed success metrics, not measured results.
+          </p>
+          <div class="grid-auto">
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">task_alt</span>
+              <h4 class="mb-8">Completion</h4>
+              <ul style="display:flex; flex-direction:column; gap:6px;">
+                <li class="small text-secondary">• Report completion rate</li>
+                <li class="small text-secondary">• Drop-off by step</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">timer</span>
+              <h4 class="mb-8">Efficiency</h4>
+              <ul style="display:flex; flex-direction:column; gap:6px;">
+                <li class="small text-secondary">• Time to submit</li>
+                <li class="small text-secondary">• Bounce-back/error rate</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">visibility</span>
+              <h4 class="mb-8">Engagement</h4>
+              <ul style="display:flex; flex-direction:column; gap:6px;">
+                <li class="small text-secondary">• Report tracking usage</li>
+                <li class="small text-secondary">• Return visits</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">monitor_heart</span>
+              <h4 class="mb-8">Product health</h4>
+              <ul style="display:flex; flex-direction:column; gap:6px;">
+                <li class="small text-secondary">• Duplicate reports</li>
+                <li class="small text-secondary">• Usage by area</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PROTOTYPE ===== -->
+        <section id="prototype" class="content-section">
+          <h2 class="mb-16">Prototype</h2>
+          <div class="card" style="border-color:var(--accent); text-align:center; padding:40px 24px;">
+            <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.08em; color:var(--accent);">Experience</p>
+            <p style="font-size:1.6rem; font-weight:700; margin-bottom:28px;">Report → Submit → Track → Resolve</p>
+            <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+              <a href="https://www.figma.com/proto/YJEOLXQvcIge6gQdXBbhkK/Leo-Design-System?node-id=65-2673&t=RSgN1z54vXmWMpMn-0&scaling=min-zoom&content-scaling=fixed&page-id=1%3A2&starting-point-node-id=65%3A2376" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:14px 32px; background:var(--accent); color:#fff; border-radius:10px; font-weight:700; font-size:0.95rem; transition:opacity 0.2s;">View Interactive Prototype →</a>
+              <a href="https://www.figma.com/design/YJEOLXQvcIge6gQdXBbhkK/Leo-Design-System?node-id=92-2612&t=RSgN1z54vXmWMpMn-1" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:14px 32px; background:transparent; color:var(--text-primary); border:1px solid var(--card-border); border-radius:10px; font-weight:600; font-size:0.95rem; transition:background 0.2s;">View Figma File →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== REFLECTION ===== -->
+        <section id="reflection" class="content-section">
+          <h2 class="mb-16">Reflection</h2>
+          <div class="card" style="border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:26px 28px;">
+            <p class="body-large text-primary" style="line-height:1.7; font-style:italic;">
+              “I'm most proud of the stepper and tracking experience. The stepper helped me think about how to guide users through a task, while tracking pushed me to think beyond submission and consider what happens afterward. This project helped me apply my previous design experience to a more practical, real-world problem.”
+            </p>
+          </div>
+
+          <div class="card mt-24" style="border-color:var(--accent); text-align:center; padding:32px;">
+            <p style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Frictionless Civic Complaint</p>
+            <p style="font-weight:600; font-size:1rem; color:var(--accent); margin-bottom:16px;">Report simply. Track transparently. Protect citizens.</p>
+            <p style="font-weight:700; font-size:1rem; color:var(--text-primary);">Report → Verify → Assign → Resolve</p>
+          </div>
+
+          <div style="text-align:center; margin-top:32px;">
+            <p style="font-weight:600; font-size:1rem; color:var(--text-primary);">Designed by</p>
+            <a href="https://sagarshivaji.github.io/SagarShivaji2.0/" style="display:inline-block; margin: 4px 0; text-decoration:none;">
+              <p style="font-size:1.3rem; font-weight:700; color:var(--accent);">Sagar Shivaji</p>
+            </a>
+            <p style="color:var(--text-tertiary); font-size:0.9rem; margin-bottom: 24px;">Product Designer</p>
+            
+            <a href="https://sagarshivaji.github.io/SagarShivaji2.0/" style="display:inline-flex; align-items:center; gap:8px; padding:12px 24px; background:var(--bg-surface); color:var(--text-primary); border:1px solid var(--card-border); border-radius:30px; font-weight:600; font-size:0.9rem; text-decoration:none; transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+              <span class="material-icons" style="font-size:1.1rem;">arrow_back</span>
+              Back to Portfolio
+            </a>
+          </div>
+        </section>
+
+      </div><!-- /project-content-block -->
+    </div><!-- /project-layout -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© <a href="https://sagarshivaji.github.io/SagarShivaji2.0/" style="color:var(--text-primary); font-weight:600; text-decoration:none;">Sagar Shivaji</a> 2026 · Frictionless Civic Complaint</p>
+      
+    </footer>
+
+  </div><!-- /container -->
+
+  <!-- Accordion + active nav scripts -->
+  <script>
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      item.classList.toggle('open');
+    }
+
+    (function () {
+      const sections = document.querySelectorAll('.content-section');
+      const navLinks = document.querySelectorAll('.sticky-nav a');
+
+      function updateActive() {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActive);
+      updateActive();
+    })();
+
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const body = document.body;
+
+    // Default to light mode (no initial class added)
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    });
+  </script>
+
+</body>
+</html>

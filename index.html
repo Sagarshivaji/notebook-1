@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sagar Shivaji — AI Product Designer Portfolio</title>
+<meta name="description" content="Portfolio of Sagar Shivaji — AI Product Designer & Part-time Developer based in Hyderabad, India. B2B SaaS, enterprise UX, and AI-powered product design." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@300;400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="stage">
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="book" id="book">
+    
+    <!-- Global Spiral Binding -->
+    <div class="binding" id="binding" aria-hidden="true"></div>
+
+    <!-- ============================================================
+         NOTEBOOK
+         ============================================================ -->
+    <div class="notebook" id="notebook">
+
+      <div class="paper" id="paper-container">
+        <div class="paper-curl" aria-hidden="true"></div>
+        <div class="coffee-stain" aria-hidden="true"></div>
+
+        <nav class="tabs" onclick="event.stopPropagation()">
+          <button class="tab-cover" id="back-to-cover" type="button" title="Close and return to cover">⟵ cover</button>
+
+          <div class="tabs-main" role="tablist">
+            <button class="tab active" data-page="index"    role="tab">index</button>
+            <button class="tab"        data-page="about"    role="tab">about me</button>
+            <button class="tab"        data-page="projects" role="tab">projects</button>
+            <button class="tab"        data-page="skills"   role="tab">skills</button>
+            <button class="tab"        data-page="contact"  role="tab">contact</button>
+            <button class="tab"        data-page="final"    role="tab">end</button>
+          </div>
+
+          <button class="mobile-menu-btn" id="mobile-menu-btn" type="button"
+                  aria-label="Open navigation menu"
+                  aria-expanded="false"
+                  aria-controls="mobile-menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
+            </svg>
+            menu
+          </button>
+        </nav>
+
+        <div class="pages">
+
+          <!-- ============ INDEX ============ -->
+          <section class="page active" id="index" role="tabpanel">
+            <h2>Index
+              <svg class="underline" viewBox="0 0 240 12" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M2 7 Q 40 2 80 7 T 160 6 T 238 8" />
+              </svg>
+            </h2>
+            
+            <div class="index-search fade-up" onclick="event.stopPropagation()">
+              <input type="text" id="search-input" placeholder="Search sections or projects..." aria-label="Search index" />
+            </div>
+
+            <div class="index-list fade-up" id="index-list">
+              <a href="#" class="index-item" data-target="about">
+                <span class="title">About Me</span>
+                <span class="dots"></span>
+                <span class="page-ref">Page 02</span>
+              </a>
+              <a href="#" class="index-item" data-target="projects">
+                <span class="title">Projects</span>
+                <span class="dots"></span>
+                <span class="page-ref">Page 03</span>
+              </a>
+              
+              <a href="#" class="index-item sub" data-target="project-detail" data-project=" ">
+                <span class="title"> ↳ Civic Complaint</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.1</span>
+              </a>
+              <a href="#" class="index-item sub" data-target="project-detail" data-project="gymogram">
+                <span class="title">↳ Gymogram — Social Fitness</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.2</span>
+              </a>
+              <a href="#" class="index-item sub" data-target="project-detail" data-project="job-pulse">
+                <span class="title">↳ Job Pulse Alert Dashboard</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.3</span>
+              </a>
+              <a href="#" class="index-item sub" data-target="project-detail" data-project="bench-sales">
+                <span class="title">↳ AI Bench Sales Platform</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.4</span>
+              </a>
+              <a href="#" class="index-item sub" data-target="project-detail" data-project="lead-generator">
+                <span class="title">↳ Lead Generator</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.5</span>
+              </a>
+              <a href="#" class="index-item sub" data-target="project-detail" data-project="laundry-app">
+                <span class="title">↳ Laundry App UX</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.6</span>
+              </a>
+              <a href="#" class="index-item sub" data-target="project-detail" data-project="leo-design">
+                <span class="title">↳ Leo Design System</span>
+                <span class="dots"></span>
+                <span class="page-ref">03.7</span>
+              </a>
+
+              <a href="#" class="index-item" data-target="skills">
+                <span class="title">Skills</span>
+                <span class="dots"></span>
+                <span class="page-ref">Page 04</span>
+              </a>
+              <a href="#" class="index-item" data-target="contact">
+                <span class="title">Contact</span>
+                <span class="dots"></span>
+                <span class="page-ref">Page 05</span>
+              </a>
+              <a href="#" class="index-item" data-target="final">
+                <span class="title">The End</span>
+                <span class="dots"></span>
+                <span class="page-ref">Page 06</span>
+              </a>
+            </div>
+
+            <div class="page-num">01</div>
+          </section>
+
+          <!-- ============ ABOUT ============ -->
+          <section class="page" id="about" role="tabpanel">
+            <div class="about-grid">
+              <div class="about-text">
+                <h1>Sagar Shivaji</h1>
+                <p class="sub">AI Product Designer &amp; Part-time Developer</p>
+                <p class="lead fade-up">
+                  I design digital products that combine human-centered design, systems thinking,
+                  and AI to solve complex problems. My focus is on B2B SaaS &amp; AI-powered
+                  enterprise products — turning complex workflows into intuitive experiences.
+                </p>
+                <p class="fade-up">
+                  Based in Hyderabad, India. I specialise in creating intuitive, scalable
+                  experiences that improve collaboration, simplify workflows, and help people
+                  and businesses achieve better outcomes.
+                </p>
+
+                <div class="stats fade-up">
+                  <div class="stat"><b>1</b><span>year in product design</span></div>
+                  <div class="stat"><b>6+</b><span>enterprise products designed</span></div>
+                  <div class="stat"><b>∞</b><span>cups of coffee</span></div>
+                </div>
+
+                <p style="margin-top:22px;">
+                  <span class="stamp">Available for select projects</span>
+                </p>
+              </div>
+
+              <figure class="polaroid profile" style="--rot:3deg">
+                <span class="washi"></span>
+                <img src="images/my drawing.jpg" alt="Self-portrait sketch of Sagar Shivaji" loading="lazy" style="background:#f5f0ea; object-fit:contain;" />
+                <figcaption>that's me ✎</figcaption>
+              </figure>
+            </div>
+
+            <svg class="doodle star" viewBox="0 0 100 100" aria-hidden="true">
+              <path d="M50 12 L61 40 L91 41 L67 59 L76 88 L50 70 L24 88 L33 59 L9 41 L39 40 Z" />
+            </svg>
+            
+            <div class="page-num">02</div>
+          </section>
+
+          <!-- ============ PROJECTS ============ -->
+          <section class="page" id="projects" role="tabpanel">
+            <h2>Projects
+              <svg class="underline" viewBox="0 0 240 12" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M2 7 Q 40 2 80 7 T 160 6 T 238 8" />
+              </svg>
+            </h2>
+            <p class="muted">Six case studies — tap any card to read the full story, from problem to outcome.</p>
+
+            <div class="projects-grid">
+              <article class="project-card" data-project=" ">
+                <div class="polaroid">
+                  <span class="washi"></span>
+                  <img src="Namma Yatri assignment/images/hero-image.png" alt="Namma Yatri Civic Complaint App" loading="lazy" />
+                </div>
+                <h3>Namma Yatri</h3>
+                <p>Frictionless civic complaint flow — removing administrative complexity from citizens and moving it into the system.</p>
+                <div class="tech">UX Research · Mobile Design · Civic Tech</div>
+                <a href="#">read case study →</a>
+              </article>
+
+              <article class="project-card" data-project="gymogram">
+                <div class="polaroid">
+                  <span class="washi blue"></span>
+                  <img src="images/gymogram/hero mock-up.png" alt="Gymogram Social Fitness Platform" loading="lazy" />
+                </div>
+                <h3>Gymogram</h3>
+                <p>Social fitness platform combining personalized workouts, community engagement, and gamification.</p>
+                <div class="tech">Product Design · iOS · Gamification</div>
+                <a href="#">read case study →</a>
+              </article>
+
+              <article class="project-card" data-project="job-pulse">
+                <div class="polaroid">
+                  <span class="washi pink"></span>
+                  <img src="images/job-pulse.png" alt="Job Pulse Alert Dashboard" loading="lazy" />
+                </div>
+                <h3>Job Pulse</h3>
+                <p>Real-time job aggregation dashboard scanning RSS feeds with customizable filters and automated alerts.</p>
+                <div class="tech">Full-Stack · UI/UX · Live App</div>
+                <a href="https://job-pulse-toie.onrender.com/" target="_blank" rel="noopener">view live app →</a>
+              </article>
+
+              <article class="project-card" data-project="bench-sales">
+                <div class="polaroid">
+                  <span class="washi"></span>
+                  <img src="images/benchsales.png" alt="AI Bench Sales Platform" loading="lazy" />
+                </div>
+                <h3>Bench Sales Platform</h3>
+                <p>AI-powered platform simplifying consultant tracking, submission management, and recruiter decision-making.</p>
+                <div class="tech">B2B SaaS · AI Product Design · NDA</div>
+                <a href="#">read case study →</a>
+              </article>
+
+              <article class="project-card" data-project="lead-generator">
+                <div class="polaroid">
+                  <span class="washi pink"></span>
+                  <img src="images/lead%20generator.png" alt="Lead Generator Platform" loading="lazy" />
+                </div>
+                <h3>Lead Generator</h3>
+                <p>AI-assisted prospecting workflow for discovering, qualifying, and managing sales leads across multiple channels.</p>
+                <div class="tech">AI SaaS · Sales Ops · Enterprise UX</div>
+                <a href="#">read case study →</a>
+              </article>
+
+              <article class="project-card" data-project="laundry-app">
+                <div class="polaroid">
+                  <span class="washi blue"></span>
+                  <img src="images/laundry app hero section.png" alt="Laundry App UX" loading="lazy" />
+                </div>
+                <h3>Laundry App</h3>
+                <p>End-to-end UX for an on-demand laundry service — from user research to high-fidelity screens.</p>
+                <div class="tech">UX Research · Mobile Design · Figma</div>
+                <a href="#">read case study →</a>
+              </article>
+
+              <article class="project-card" data-project="leo-design">
+                <div class="polaroid">
+                  <span class="washi pink"></span>
+                  <img src="images/designsystem.png" alt="Leo Design System" loading="lazy" />
+                </div>
+                <h3>Leo Design System</h3>
+                <p>A scaleable component library and design system built for B2B SaaS enterprise products.</p>
+                <div class="tech">Design Systems · Figma · Tokens</div>
+                <a href="#">read case study →</a>
+              </article>
+            </div>
+            
+            <div class="page-num">03</div>
+          </section>
+
+          <!-- ============ PROJECT DETAIL / CASE STUDY ============ -->
+          <section class="page" id="project-detail" role="tabpanel">
+            <div class="detail-topbar" onclick="event.stopPropagation()">
+              <button class="detail-back" id="back-to-projects" type="button">← back to projects</button>
+              <span class="detail-counter" id="detail-counter">1 / 1</span>
+            </div>
+
+            <div class="detail-hero">
+              <img id="detail-image" src="" alt="" />
+            </div>
+
+            <h2 id="detail-title">Project</h2>
+            <p class="sub detail-tagline" id="detail-tagline"></p>
+            <div class="detail-meta" id="detail-meta"></div>
+
+            <div class="detail-body" id="detail-body"></div>
+
+            <div class="detail-tech" id="detail-tech"></div>
+
+            <div class="detail-links" onclick="event.stopPropagation()">
+              <a id="detail-demo" href="#" target="_blank" rel="noopener"> </a>
+              <a id="detail-code" href="#" target="_blank" rel="noopener"></a>
+            </div>
+
+            <div class="detail-nav" onclick="event.stopPropagation()">
+              <button class="detail-nav-btn" id="detail-prev" type="button">← previous</button>
+              <div class="detail-dots" id="detail-dots"></div>
+              <button class="detail-nav-btn" id="detail-next" type="button">next →</button>
+            </div>
+            
+            <div class="page-num" id="detail-page-num">03.1</div>
+          </section>
+
+          <!-- ============ SKILLS ============ -->
+          <section class="page" id="skills" role="tabpanel">
+            <h2>Skills
+              <svg class="underline" viewBox="0 0 240 12" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M2 6 Q 44 2 88 7 T 170 5 T 238 7" />
+              </svg>
+            </h2>
+
+            <div class="skill-group fade-up">
+              <h3>Design</h3>
+              <div class="skills">
+                <span class="skill filled">UI/UX Design</span>
+                <span class="skill filled">Design Systems</span>
+                <span class="skill filled">Prototyping</span>
+                <span class="skill filled">User Research</span>
+                <span class="skill">Wireframing</span>
+                <span class="skill">B2B SaaS</span>
+                <span class="skill">Mobile Design</span>
+              </div>
+            </div>
+
+            <div class="skill-group fade-up">
+              <h3>Tools</h3>
+              <div class="skills">
+                <span class="skill">Figma</span>
+                <span class="skill">Framer</span>
+                <span class="skill">Adobe CC</span>
+                <span class="skill">Notion</span>
+                <span class="skill">Agentic AI</span>
+              </div>
+            </div>
+
+            <div class="skill-group fade-up">
+              <h3>Frontend</h3>
+              <div class="skills">
+                <span class="skill">HTML/CSS/JS</span>
+                <span class="skill">React</span>
+                <span class="skill">Node.js</span>
+                <span class="skill">Python</span>
+              </div>
+            </div>
+
+            <div class="skill-group fade-up">
+              <h3>Soft Skills</h3>
+              <div class="skills">
+                <span class="skill">Systems Thinking</span>
+                <span class="skill">Cross-functional Collaboration</span>
+                <span class="skill">Stakeholder Management</span>
+                <span class="skill">Design Critique</span>
+              </div>
+            </div>
+
+            <p class="muted fade-up" style="margin-top:8px;">
+              Currently exploring: <span class="highlight">AI integration in product design workflows</span>
+            </p>
+            
+            <div class="page-num">04</div>
+          </section>
+
+          <!-- ============ CONTACT ============ -->
+          <section class="page" id="contact" role="tabpanel">
+            <h2>Contact
+              <svg class="underline" viewBox="0 0 240 12" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M2 7 Q 48 3 92 8 T 176 6 T 238 8" />
+              </svg>
+            </h2>
+
+            <p class="lead fade-up">
+              Got a project, a question, or just want to say hi? My inbox is open.
+            </p>
+
+            <div class="contact-list fade-up">
+              <div class="contact-line">
+                <span class="label">Email</span>
+                <a href="mailto:sagarshivaji89@gmail.com">sagarshivaji89@gmail.com</a>
+              </div>
+              <div class="contact-line">
+                <span class="label">LinkedIn</span>
+                <a href="https://www.linkedin.com/in/sagar-shivaji-090904262/" target="_blank" rel="noopener">linkedin.com/in/sagar-shivaji</a>
+              </div>
+              <div class="contact-line">
+                <span class="label">Behance</span>
+                <a href="https://www.behance.net/sagarshivaji" target="_blank" rel="noopener">behance.net/sagarshivaji</a>
+              </div>
+              <div class="contact-line">
+                <span class="label">Instagram</span>
+                <a href="https://www.instagram.com/ss.art.19/" target="_blank" rel="noopener">@ss.art.19</a>
+              </div>
+              <div class="contact-line">
+                <span class="label">Resume</span>
+                <a href="https://drive.google.com/file/d/1GSdCrdNhtTW1OOrWKYBNJSG5JsdlyeKb/view?usp=sharing" target="_blank" rel="noopener">View Resume ↗</a>
+              </div>
+            </div>
+
+            <svg class="doodle arrow" viewBox="0 0 100 70" aria-hidden="true">
+              <path d="M6 34 Q 30 8 56 28 T 92 22" />
+              <path d="M80 12 L93 22 L80 34" />
+            </svg>
+
+            <p class="signature">— thanks for reading ✎</p>
+            
+            <div class="page-num">05</div>
+          </section>
+
+          <!-- ============ FINAL PAGE ============ -->
+          <section class="page" id="final" role="tabpanel">
+            <div class="final-page-content">
+              <h2>The End</h2>
+              <p>Thank you for flipping through my notebook. If you like what you see, let's build something great together.</p>
+              
+              <svg class="final-doodle" viewBox="0 0 150 100" aria-hidden="true">
+                <path d="M30 40 L110 40 L100 90 L40 90 Z" />
+                <path d="M110 50 C 130 50 130 75 105 75" />
+                <path d="M50 20 Q 55 30 50 40" />
+                <path d="M70 20 Q 75 30 70 40" />
+                <path d="M90 20 Q 95 30 90 40" />
+              </svg>
+
+              <div class="final-sig">Sagar Shivaji</div>
+              <div class="final-sub">AI Product Designer · Hyderabad, India</div>
+            </div>
+            
+            <div class="page-num">06</div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ARTISTIC COVER PAGE
+         ============================================================ -->
+    <div class="cover" id="cover" role="button" tabindex="0"
+         aria-label="Open the notebook portfolio">
+
+      <!-- FRONT -->
+      <div class="cover-face cover-front">
+        <div class="cover-frame" aria-hidden="true"></div>
+
+        <svg class="cover-sparkle" viewBox="0 0 40 40" aria-hidden="true">
+          <path d="M20 3 L23 16 L36 20 L23 24 L20 37 L17 24 L4 20 L17 16 Z" />
+        </svg>
+
+        <div class="cover-topline">
+          <span class="cover-kicker">a portfolio in</span>
+          <span class="cover-year">2026</span>
+        </div>
+
+        <div class="cover-main">
+          <div class="cover-name-block">
+            <h1 class="cover-title">
+              <span>Sagar</span>
+              <span>Shivaji</span>
+            </h1>
+
+            <svg class="cover-swoosh" viewBox="0 0 220 14" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M3 8 Q 42 2 84 8 T 168 6 T 217 9" />
+            </svg>
+
+            <p class="cover-role">AI Product Designer &amp; Part-time Developer</p>
+
+            <div class="cover-chips">
+              <span class="chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Hyderabad, India
+              </span>
+              <span class="chip chip--open">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                Available for select projects
+              </span>
+            </div>
+          </div>
+
+          <div class="cover-polaroid">
+            <span class="cover-tape"></span>
+            <img src="images/my drawing.jpg" alt="Sagar Shivaji self-portrait sketch" style="filter:none; background:#f5f0ea;" />
+            <span class="caption">Sagar ✎</span>
+          </div>
+        </div>
+
+        <div class="cover-footer">
+          <p class="cover-quote">"simplicity through thoughtful design"</p>
+          <div class="cover-sig-group">
+            <span class="cover-sig">Sagar Shivaji</span>
+            <span class="cover-date">October 2026</span>
+          </div>
+        </div>
+
+        <div class="open-hint">click to open ✦</div>
+      </div>
+
+      <!-- INSIDE COVER / EX LIBRIS -->
+      <div class="cover-face cover-back">
+        <div class="exlibris">
+          <span class="exlibris-top">ex libris</span>
+          <span class="exlibris-name">Sagar Shivaji</span>
+          <span class="exlibris-line" aria-hidden="true"></span>
+          <span class="exlibris-note">
+            a notebook of things made,<br>things learned, and the<br>occasional doodle.
+          </span>
+
+          <div class="exlibris-signoff">
+            <div class="exlibris-field">
+              <span class="exlibris-label">date</span>
+              <span class="exlibris-date">October 2026</span>
+            </div>
+            <div class="exlibris-field">
+              <span class="exlibris-label">signed</span>
+              <span class="exlibris-sig">Sagar Shivaji</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MOBILE MENU
+     ============================================================ -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu-backdrop" data-close-menu></div>
+
+  <nav class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Portfolio navigation">
+    <div class="mobile-menu-head">
+      <span class="mobile-menu-title">Jump to</span>
+      <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Close menu">✕</button>
+    </div>
+
+    <div class="mobile-menu-links">
+      <button class="mobile-menu-link" type="button" data-page="index">
+        <span>index</span><span class="menu-page-ref">01</span>
+      </button>
+      <button class="mobile-menu-link" type="button" data-page="about">
+        <span>about me</span><span class="menu-page-ref">02</span>
+      </button>
+      <button class="mobile-menu-link" type="button" data-page="projects">
+        <span>projects</span><span class="menu-page-ref">03</span>
+      </button>
+
+      <div class="mobile-menu-section-label">case studies</div>
+      <button class="mobile-menu-link sub" type="button" data-project=" ">
+        <span>↳ Namma Yatri</span><span class="menu-page-ref">03.1</span>
+      </button>
+      <button class="mobile-menu-link sub" type="button" data-project="gymogram">
+        <span>↳ Gymogram</span><span class="menu-page-ref">03.2</span>
+      </button>
+      <button class="mobile-menu-link sub" type="button" data-project="job-pulse">
+        <span>↳ Job Pulse</span><span class="menu-page-ref">03.3</span>
+      </button>
+      <button class="mobile-menu-link sub" type="button" data-project="bench-sales">
+        <span>↳ Bench Sales</span><span class="menu-page-ref">03.4</span>
+      </button>
+      <button class="mobile-menu-link sub" type="button" data-project="lead-generator">
+        <span>↳ Lead Generator</span><span class="menu-page-ref">03.5</span>
+      </button>
+      <button class="mobile-menu-link sub" type="button" data-project="laundry-app">
+        <span>↳ Laundry App</span><span class="menu-page-ref">03.6</span>
+      </button>
+      <button class="mobile-menu-link sub" type="button" data-project="leo-design">
+        <span>↳ Leo Design System</span><span class="menu-page-ref">03.7</span>
+
+      <button class="mobile-menu-link" type="button" data-page="skills">
+        <span>skills</span><span class="menu-page-ref">04</span>
+      </button>
+      <button class="mobile-menu-link" type="button" data-page="contact">
+        <span>contact</span><span class="menu-page-ref">05</span>
+      </button>
+      <button class="mobile-menu-link" type="button" data-page="final">
+        <span>the end</span><span class="menu-page-ref">06</span>
+      </button>
+
+      <button class="mobile-menu-link mobile-cover-btn" type="button" data-cover="true">
+        <span>⟵ back to cover</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

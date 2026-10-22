@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frictionless Civic Complaint · Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       ============================================================ */
+    :root {
+      --bg: #0d0d16;
+      --bg-surface: rgba(255, 255, 255, 0.04);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f0f0f5;
+      --text-secondary: #a0a0b0;
+      --text-tertiary: #6a6a7a;
+      --accent: #FF6B35;
+      --accent-soft: rgba(255, 107, 53, 0.12);
+      --success: #2ECC71;
+      --danger: #e74c3c;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --max-width: 1280px;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 0 24px;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    ul {
+      list-style: none;
+    }
+
+    /* ============================================================
+       TYPOGRAPHY
+       ============================================================ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text-primary);
+    }
+    h1 { font-size: 2.8rem; letter-spacing: -0.02em; }
+    h2 { font-size: 1.8rem; letter-spacing: -0.01em; }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1rem; }
+
+    .body-large { font-size: 1.1rem; line-height: 1.7; }
+    .body-base { font-size: 0.98rem; line-height: 1.7; }
+    .small { font-size: 0.85rem; line-height: 1.6; }
+    .text-secondary { color: var(--text-secondary); }
+    .text-tertiary { color: var(--text-tertiary); }
+    .text-primary { color: var(--text-primary); }
+    .accent-text { color: var(--accent); }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 0 80px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 48px;
+    }
+    .hero .caption {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hero h1 {
+      margin: 16px 0 12px;
+      max-width: 840px;
+    }
+    .hero p {
+      max-width: 680px;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    /* Info bar */
+    .info-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 48px;
+    }
+    .info-item span {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+    .info-item strong {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Project layout */
+    .project-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Sticky nav */
+    .sticky-nav {
+      position: sticky;
+      top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sticky-nav a {
+      font-size: 0.82rem;
+      padding: 7px 12px;
+      border-radius: 8px;
+      color: var(--text-tertiary);
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+    .sticky-nav a:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface);
+    }
+    .sticky-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Content */
+    .project-content-block {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+    .content-section {
+      scroll-margin-top: 32px;
+    }
+
+    /* ============================================================
+       COMPONENTS
+       ============================================================ */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .card-sm {
+      padding: 18px 20px;
+      border-radius: var(--radius-sm);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .grid-auto {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    /* Flow steps */
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
+      background: var(--card-bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--card-border);
+    }
+    .flow-step-num {
+      font-weight: 800;
+      color: var(--accent);
+      min-width: 28px;
+      font-size: 1.1rem;
+    }
+    .flow-arrow {
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 1.1rem;
+      line-height: 1;
+      margin: -2px 0;
+    }
+
+    /* Timeline */
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-left: 2px solid var(--card-border);
+      margin-left: 8px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .timeline-item:last-child {
+      padding-bottom: 0;
+      border-left-color: transparent;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -9px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--card-border);
+    }
+    .timeline-dot.done { background: var(--success); }
+    .timeline-dot.active { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+    .timeline-dot.pending { background: var(--bg-surface); border: 2px solid var(--card-border); }
+
+    /* Table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+      vertical-align: top;
+    }
+    .compare-table thead th {
+      background: var(--card-bg);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+    }
+    .compare-table thead th:last-child {
+      color: var(--accent);
+    }
+    .compare-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    /* QA cards */
+    .qa-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+    .qa-card h4 {
+      font-weight: 700;
+      font-size: 0.98rem;
+      margin-bottom: 8px;
+    }
+    .qa-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* Utilities */
+    .mb-0 { margin-bottom: 0; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-20 { margin-bottom: 20px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      font-size: 0.82rem;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--card-border);
+      padding: 32px 0 24px;
+      margin-top: 64px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .project-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .sticky-nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--card-border);
+      }
+      .sticky-nav a {
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        padding: 6px 10px;
+        font-size: 0.78rem;
+      }
+      .sticky-nav a.active {
+        border-left: none;
+        border-bottom-color: var(--accent);
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      body { padding: 0 16px; }
+      .compare-table { font-size: 0.78rem; }
+      .compare-table th, .compare-table td { padding: 8px 10px; }
+      .compare-table tbody td:first-child { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <header class="hero">
+      <span class="caption">Product Design · 2026</span>
+      <h1>Frictionless Civic Complaint</h1>
+      <p>
+        A simpler, safer and more transparent way to report civic issues —
+        removing administrative complexity from the citizen and moving it into the system.
+      </p>
+    </header>
+
+    <!-- ============================================================
+         INFO BAR
+         ============================================================ -->
+    <div class="info-bar">
+      <div class="info-item">
+        <span>Role</span>
+        <strong>Product Designer</strong>
+      </div>
+      <div class="info-item">
+        <span>Type</span>
+        <strong>Design   01</strong>
+      </div>
+      <div class="info-item">
+        <span>Platform</span>
+        <strong>Mobile (iOS / Android)</strong>
+      </div>
+      <div class="info-item">
+        <span>Tools</span>
+        <strong>Figma · FigJam</strong>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PROJECT LAYOUT
+         ============================================================ -->
+    <div class="project-layout">
+
+      <!-- Sticky Nav -->
+      <nav class="sticky-nav" id="stickyNav">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#problem">Problem</a>
+        <a href="#existing">Existing Experience</a>
+        <a href="#insight">Competitive Insight</a>
+        <a href="#principles">Design Principles</a>
+        <a href="#assumptions">User Assumptions</a>
+        <a href="#scenario">Scenario</a>
+        <a href="#userflow">Core User Flow</a>
+        <a href="#screens">The Screens</a>
+        <a href="#tracking">Tracking</a>
+        <a href="#verification">Verification</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#community">Community Progress</a>
+        <a href="#ia">Information Architecture</a>
+        <a href="#mvp">MVP</a>
+        <a href="#future">Future Features</a>
+        <a href="#tradeoffs">Trade-offs</a>
+        <a href="#metrics">Success Metrics</a>
+        <a href="#framework">Success Framework</a>
+        <a href="#learnings">Learnings</a>
+        <a href="#beforeafter">Before vs After</a>
+        <a href="#hypothesis">UX Hypothesis</a>
+        <a href="#prototype">Prototype Flow</a>
+        <a href="#hero-screens">4 Hero Screens</a>
+        <a href="#qa">Presentation Q&amp;A</a>
+        <a href="#comparison">Comparison</a>
+        <a href="#thankyou">Thank You</a>
+      </nav>
+
+      <!-- Content -->
+      <div class="project-content-block">
+
+        <!-- ===== OVERVIEW ===== -->
+        <section id="overview" class="content-section">
+          <h2 class="mb-16">Overview</h2>
+          <div class="grid-2">
+            <div>
+              <p class="body-large text-primary mb-16">
+                Citizens encounter civic issues every day — potholes, garbage dumping, broken streetlights, water leaks and damaged footpaths. Reporting them, however, can feel like completing a government form rather than performing a simple civic action.
+              </p>
+              <p class="body-base text-secondary">
+                This project redesigns the civic reporting experience around a single principle: <strong>ask the citizen only what they know, and let the system handle the administrative complexity.</strong> The result is a reporting flow that takes seconds, a tracking model that separates submission from verification, and a public layer that shows civic progress without exposing the people who reported it.
+              </p>
+            </div>
+            <div>
+              <img src="../images/civic/hero-mockup.png" alt="Frictionless Civic Complaint hero mockup" style="width:100%; border-radius:12px;" />
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PROBLEM ===== -->
+        <section id="problem" class="content-section">
+          <h2 class="mb-16">The Problem</h2>
+          <p class="body-base text-secondary mb-20">
+            From the existing apps I reviewed, I observed a consistent set of friction points that appear before a citizen ever reaches the actual complaint flow.
+          </p>
+          <div class="grid-auto">
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">layers</span>
+              <h4 class="mb-8">Too Many Options First</h4>
+              <p class="small text-secondary">Users face multiple modules before reaching the core task.</p>
+            </div>
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">description</span>
+              <h4 class="mb-8">Long, Formal Forms</h4>
+              <p class="small text-secondary">Administrative terminology and lengthy fields.</p>
+            </div>
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">account_balance</span>
+              <h4 class="mb-8">Administrative Knowledge</h4>
+              <p class="small text-secondary">Asked for ward, corporation and category details.</p>
+            </div>
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">alt_route</span>
+              <h4 class="mb-8">Multiple Navigation Layers</h4>
+              <p class="small text-secondary">Too many taps to reach a single action.</p>
+            </div>
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">help_outline</span>
+              <h4 class="mb-8">No Post-Submission Clarity</h4>
+              <p class="small text-secondary">Limited understanding of what happens next.</p>
+            </div>
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">verified_user</span>
+              <h4 class="mb-8">Submission ≠ Verification</h4>
+              <p class="small text-secondary">A submitted complaint and a verified issue are not the same thing.</p>
+            </div>
+            <div class="card card-sm">
+              <span class="material-icons accent-text" style="font-size:1.9rem; display:block; margin-bottom:6px;">visibility_off</span>
+              <h4 class="mb-8">Privacy Concerns</h4>
+              <p class="small text-secondary">Public complaint feeds can expose reporters.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== EXISTING EXPERIENCE ===== -->
+        <section id="existing" class="content-section">
+          <h2 class="mb-16">What Exists Today?</h2>
+          <p class="body-base text-secondary mb-24">
+            I reviewed three types of existing civic complaint experiences to understand where complexity currently sits.
+          </p>
+
+          <!-- A -->
+          <div class="card mb-20">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span class="material-icons accent-text" style="font-size:2rem;">apartment</span>
+              <h3>A · Namma Bengaluru / Sahaaya 2.0</h3>
+            </div>
+            <div class="grid-2">
+              <div>
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">What it does well</p>
+                <ul style="display:flex; flex-direction:column; gap:8px;">
+                  <li class="card card-sm small">✅ Unified grievance platform</li>
+                  <li class="card card-sm small">✅ Supports multiple departments</li>
+                  <li class="card card-sm small">✅ Citizens can submit grievances</li>
+                  <li class="card card-sm small">✅ Provides status tracking</li>
+                  <li class="card card-sm small">✅ Text, photo &amp; video support</li>
+                </ul>
+              </div>
+              <div>
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Observed opportunities</p>
+                <ul style="display:flex; flex-direction:column; gap:8px;">
+                  <li class="card card-sm small">⚠️ Dense information architecture</li>
+                  <li class="card card-sm small">⚠️ Administrative terminology</li>
+                  <li class="card card-sm small">⚠️ Multiple choices before the core task</li>
+                  <li class="card card-sm small">⚠️ Form-heavy reporting experience</li>
+                  <li class="card card-sm small">⚠️ Status-oriented rather than outcome-oriented tracking</li>
+                </ul>
+              </div>
+            </div>
+            <p class="small text-tertiary mt-16">
+              Recent App Store reviews also report navigation/back-button problems, loading issues and complaints remaining in reported states for long periods. These are user reports, not independent verification of every issue, but they indicate areas worth investigating.
+            </p>
+          </div>
+
+          <!-- B -->
+          <div class="card mb-20">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span class="material-icons accent-text" style="font-size:2rem;">photo_camera</span>
+              <h3>B · Swachhata</h3>
+            </div>
+            <p class="body-base text-secondary mb-12">
+              Swachhata takes a more direct approach: citizens take a picture of a complaint, submit it, and the platform uses geolocation to forward it to the relevant municipal corporation. Citizens receive status updates and can provide feedback after resolution.
+            </p>
+            <div class="card card-sm" style="display:flex; align-items:flex-start; gap:14px;">
+              <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">lightbulb</span>
+              <p class="small text-secondary" style="line-height:1.6;">
+                <strong class="text-primary">Opportunity:</strong> The model is closer to frictionless reporting, but there is still room to make the broader experience more understandable. The unanswered question is — <em>what happens between “I reported this” and “someone fixed this”?</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- C -->
+          <div class="card">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span class="material-icons accent-text" style="font-size:2rem;"> </span>
+              <h3>C · GBA / Sahaaya-style Form Experience</h3>
+            </div>
+            <p class="body-base text-secondary mb-16">
+              From the screens I reviewed, the user can encounter fields such as:
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+              <span class="tag">Address</span>
+              <span class="tag">Ward number</span>
+              <span class="tag">Ward name</span>
+              <span class="tag">Latitude</span>
+              <span class="tag">Longitude</span>
+              <span class="tag">Corporation</span>
+              <span class="tag">Category</span>
+              <span class="tag">Subcategory</span>
+            </div>
+            <div class="grid-2 mb-16">
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8">The citizen understands</p>
+                <p style="font-size:1rem; font-weight:600;">“There is a garbage dump here.”</p>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8">They shouldn't need to understand</p>
+                <p style="font-size:1rem; font-weight:600;">“Which corporation and ward does this belong to?”</p>
+              </div>
+            </div>
+            <div class="card card-sm" style="display:flex; align-items:flex-start; gap:14px;">
+              <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">swap_horiz</span>
+              <p class="small text-secondary" style="line-height:1.6;">
+                <strong class="text-primary">Design opportunity:</strong> Move administrative complexity from the citizen to the system.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== COMPETITIVE INSIGHT ===== -->
+        <section id="insight" class="content-section">
+          <h2 class="mb-16">Competitive Insight</h2>
+          <p class="body-base text-secondary mb-24">
+            The opportunity isn't “add more features.” It is — <strong class="text-primary">remove unnecessary decisions from the citizen.</strong>
+          </p>
+          <div class="grid-2">
+            <div class="card">
+              <p class="small text-tertiary font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em;">Existing mental model</p>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="flow-step"><span class="font-semibold">Citizen</span></div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step"><span class="font-semibold">Government form</span></div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step"><span class="font-semibold">Department</span></div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step"><span class="font-semibold">Processing</span></div>
+              </div>
+            </div>
+            <div class="card" style="border-color: var(--accent);">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--accent);">Proposed mental model</p>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="flow-step"><span class="font-semibold">Citizen</span></div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step"><span class="font-semibold">Report</span></div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step"><span class="font-semibold">System handles complexity</span></div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step"><span class="font-semibold">Track progress</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== DESIGN PRINCIPLES ===== -->
+        <section id="principles" class="content-section">
+          <h2 class="mb-16">Key Design Principles</h2>
+          <div class="grid-auto">
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">01</span>
+              <h4 class="mb-8">Report in Seconds</h4>
+              <p class="small text-secondary">The primary action should always be obvious.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">02</span>
+              <h4 class="mb-8">Ask Only What the Citizen Knows</h4>
+              <p class="small text-secondary">Where they saw it, what happened, what it looks like. The system determines ward, corporation, department and routing.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">03</span>
+              <h4 class="mb-8">Don't Confuse Submission with Verification</h4>
+              <p class="small text-secondary">A citizen submitting a report doesn't mean the issue has been verified.</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.4rem; color:var(--accent); display:block; margin-bottom:8px;">04</span>
+              <h4 class="mb-8">Transparency Without Exposing Citizens</h4>
+              <p class="small text-secondary">Show aggregated progress and verified outcomes — never reporter identity.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== USER ASSUMPTIONS ===== -->
+        <section id="assumptions" class="content-section">
+          <h2 class="mb-16">User Assumptions</h2>
+          <p class="body-base text-secondary mb-20">I assumed the primary user:</p>
+          <div class="grid-auto">
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">directions_walk</span>
+              <span class="small">Is encountering an issue while moving around the city</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">smartphone</span>
+              <span class="small">Has a smartphone</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">my_location</span>
+              <span class="small">Can provide location access</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">schedule</span>
+              <span class="small">May have limited time when reporting</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">help_center</span>
+              <span class="small">Doesn't necessarily understand government departments</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">mark_email_read</span>
+              <span class="small">Wants confirmation that the issue was received</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">timeline</span>
+              <span class="small">Wants to know what happens after submission</span>
+            </div>
+            <div class="flow-step">
+              <span class="material-icons accent-text" style="font-size:1.3rem;">lock</span>
+              <span class="small">May be concerned about privacy</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== SCENARIO ===== -->
+        <section id="scenario" class="content-section">
+          <h2 class="mb-16">Primary User Scenario</h2>
+          <div class="card">
+            <div style="display:flex; align-items:flex-start; gap:16px; margin-bottom:20px;">
+              <span class="material-icons accent-text" style="font-size:2rem; min-width:34px;">person_pin_circle</span>
+              <p class="body-base text-secondary" style="line-height:1.7;">
+                <strong class="text-primary">Sagar</strong> is walking through his neighborhood and notices a large pothole that is creating a safety problem.
+              </p>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:16px; margin-bottom:20px;">
+              <span class="material-icons accent-text" style="font-size:2rem; min-width:34px;">bolt</span>
+              <p class="body-base text-secondary" style="line-height:1.7;">
+                Instead of remembering the location and reporting it later, he opens the civic app immediately.
+              </p>
+            </div>
+            <div class="card card-sm" style="display:flex; align-items:flex-start; gap:16px;">
+              <span class="material-icons accent-text" style="font-size:2rem; min-width:34px;">flag</span>
+              <div>
+                <p class="font-bold mb-8">Goal</p>
+                <p class="body-base text-secondary">Report the issue with minimal effort and later understand whether action was taken.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== CORE USER FLOW ===== -->
+        <section id="userflow" class="content-section">
+          <h2 class="mb-16">Core User Flow</h2>
+          <p class="body-base text-secondary mb-20">The full journey — from opening the app to resolution.</p>
+          <div class="grid-2">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div class="flow-step"><span class="flow-step-num">01</span><span class="font-semibold">Home</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">02</span><span class="font-semibold">Report an Issue</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">03</span><span class="font-semibold">Location</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">04</span><span class="font-semibold">Issue Type</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">05</span><span class="font-semibold">Photo + Optional Description</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">06</span><span class="font-semibold">Review</span></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div class="flow-step"><span class="flow-step-num">07</span><span class="font-semibold">Submit</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">08</span><span class="font-semibold">Report Received</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">09</span><span class="font-semibold">Verifying</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">10</span><span class="font-semibold">Assigned</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step"><span class="flow-step-num">11</span><span class="font-semibold">In Progress</span></div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step" style="border-color:var(--accent);"><span class="flow-step-num">12</span><span class="font-semibold">Resolved</span></div>
+            </div>
+          </div>
+          <div class="card mt-24">
+            <p class="small text-tertiary font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em;">Secondary flows</p>
+            <div style="display:flex; flex-direction:column; gap:6px; font-family:monospace; font-size:0.88rem; color:var(--text-secondary);">
+              <span>Home</span>
+              <span> ├── Report an issue</span>
+              <span> ├── Community progress</span>
+              <span> └── Your reports</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== THE SCREENS ===== -->
+        <section id="screens" class="content-section">
+          <h2 class="mb-24">The Screens</h2>
+
+          <!-- Screen 1 -->
+          <div class="card mb-20">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span style="font-weight:800; font-size:1.1rem; color:var(--accent);">01</span>
+              <h3>Home</h3>
+            </div>
+            <p class="body-base text-secondary mb-16">
+              <strong class="text-primary">Goal:</strong> Make the primary action immediately obvious.
+            </p>
+            <div class="grid-2 mb-16">
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Main CTA</p>
+                <p style="font-weight:700; font-size:1.05rem; color:var(--accent);">Report an issue</p>
+                <p class="small text-secondary mt-16">Potholes, garbage, streetlights, water leaks &amp; more</p>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Secondary content</p>
+                <p style="font-weight:600;">Community progress</p>
+                <p class="small text-secondary mt-16">Instead of showing every complaint submitted by citizens.</p>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div class="flow-step">
+                <span class="material-icons" style="font-size:1.2rem; color:var(--success);">lightbulb</span>
+                <span class="small">Streetlight repaired · Koramangala · 2 days ago</span>
+              </div>
+              <div class="flow-step">
+                <span class="material-icons" style="font-size:1.2rem; color:var(--accent);">construction</span>
+                <span class="small">Road repair underway · Adugodi · In progress</span>
+              </div>
+            </div>
+            <p class="small text-tertiary mt-16">
+              <strong>Why?</strong> This creates trust without exposing individual reporters or treating every submission as a confirmed issue.
+            </p>
+          </div>
+
+          <!-- Screen 2 -->
+          <div class="card mb-20">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span style="font-weight:800; font-size:1.1rem; color:var(--accent);">02</span>
+              <h3>Location + Issue Type</h3>
+            </div>
+            <div class="grid-2 mb-16">
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Location</p>
+                <p class="font-semibold mb-12">Where did you spot it?</p>
+                <div style="display:inline-block; padding:8px 14px; background:var(--accent); color:#fff; border-radius:8px; font-size:0.82rem; font-weight:600; margin-bottom:8px;">Use my current location</div>
+                <p class="small text-secondary">Alternative: Search or enter location</p>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Issue type</p>
+                <p class="font-semibold mb-12">What needs attention?</p>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                  <span class="tag">Pothole</span>
+                  <span class="tag">Streetlight</span>
+                  <span class="tag">Garbage</span>
+                  <span class="tag">Water leak</span>
+                  <span class="tag">Broken footpath</span>
+                  <span class="tag">Sewage</span>
+                  <span class="tag">Other</span>
+                </div>
+              </div>
+            </div>
+            <div class="card card-sm" style="display:flex; align-items:flex-start; gap:14px;">
+              <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">visibility</span>
+              <p class="small text-secondary" style="line-height:1.6;">
+                <strong class="text-primary">Design decision — progressive disclosure.</strong> Don't ask the user for latitude, longitude, ward or corporation. Those can be derived by the system.
+              </p>
+            </div>
+          </div>
+
+          <!-- Screen 3 -->
+          <div class="card mb-20">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span style="font-weight:800; font-size:1.1rem; color:var(--accent);">03</span>
+              <h3>Add Details</h3>
+            </div>
+            <div class="grid-2 mb-16">
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Add a photo</p>
+                <p class="font-semibold mb-12">Help us understand the issue.</p>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <span style="padding:7px 14px; background:var(--accent); color:#fff; border-radius:8px; font-size:0.8rem; font-weight:600;">Take photo</span>
+                  <span class="tag">Choose from gallery</span>
+                </div>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Tell us more <span style="color:var(--accent);">· Optional</span></p>
+                <p class="small text-secondary" style="font-style:italic; line-height:1.6;">“Large pothole near the junction. It's causing traffic and is risky for two-wheeler riders.”</p>
+              </div>
+            </div>
+            <div class="card card-sm" style="display:flex; align-items:flex-start; gap:14px;">
+              <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">edit_off</span>
+              <p class="small text-secondary" style="line-height:1.6;">
+                <strong class="text-primary">Why optional?</strong> A mandatory long description creates friction. The photo + location + category may already provide enough information for initial verification.
+              </p>
+            </div>
+          </div>
+
+          <!-- Screen 4 -->
+          <div class="card mb-20">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span style="font-weight:800; font-size:1.1rem; color:var(--accent);">04</span>
+              <h3>Review &amp; Submit</h3>
+            </div>
+            <div class="grid-3 mb-16">
+              <div class="card card-sm">
+                <p class="small text-tertiary mb-8">Issue</p>
+                <p class="font-semibold">Pothole</p>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary mb-8">Location</p>
+                <p class="font-semibold">Koramangala 8th Block</p>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary mb-8">Photo</p>
+                <p class="font-semibold">Uploaded image</p>
+              </div>
+              <div class="card card-sm">
+                <p class="small text-tertiary mb-8">Description</p>
+                <p class="font-semibold">Optional description</p>
+              </div>
+            </div>
+            <div class="card card-sm mb-16" style="display:flex; align-items:flex-start; gap:14px;">
+              <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">shield</span>
+              <div>
+                <p class="font-bold mb-8">Privacy</p>
+                <p class="small text-secondary">Your name and contact details are not publicly displayed. Location shown publicly is approximate.</p>
+              </div>
+            </div>
+            <div style="display:inline-block; padding:12px 28px; background:var(--accent); color:#fff; border-radius:10px; font-weight:700; font-size:0.95rem;">Submit report</div>
+            <p class="small text-tertiary mt-16">
+              This screen demonstrates both frictionlessness and privacy thinking.
+            </p>
+          </div>
+
+          <!-- Screen 5 -->
+          <div class="card">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <span style="font-weight:800; font-size:1.1rem; color:var(--accent);">05</span>
+              <h3>Submission State</h3>
+            </div>
+            <div class="card card-sm" style="padding:22px; text-align:center; margin-bottom:16px;">
+              <span class="material-icons" style="font-size:2.4rem; color:var(--success); display:block; margin-bottom:8px;">check_circle</span>
+              <p class="font-bold" style="font-size:1.1rem; margin-bottom:6px;">Report received</p>
+              <p class="small text-secondary mb-12">We're verifying the issue and location.</p>
+              <p style="font-family:monospace; font-size:0.9rem; color:var(--accent);">Report ID #CIV-28491</p>
+            </div>
+            <p class="small text-secondary">
+              This is better than immediately saying “Complaint verified.” — because you don't yet know whether the report is genuine.
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== TRACKING ===== -->
+        <section id="tracking" class="content-section">
+          <h2 class="mb-16">Tracking Screen</h2>
+          <p class="body-base text-secondary mb-20">
+            The strongest screen in the flow — it makes progress visible without over-promising.
+          </p>
+          <div class="card">
+            <div class="mb-20">
+              <p style="font-family:monospace; font-size:0.9rem; color:var(--accent); margin-bottom:4px;">Report #CIV-28491</p>
+              <p class="font-bold" style="font-size:1.05rem;">Pothole · Koramangala 8th Block</p>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+              <div class="timeline-item">
+                <span class="timeline-dot done"></span>
+                <div>
+                  <p class="font-bold small">✓ Report received</p>
+                  <p class="small text-tertiary">10:24 AM</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot done"></span>
+                <div>
+                  <p class="font-bold small">✓ Issue verified</p>
+                  <p class="small text-tertiary">12:15 PM</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot done"></span>
+                <div>
+                  <p class="font-bold small">✓ Assigned</p>
+                  <p class="small text-tertiary">Road Maintenance Team</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot active"></span>
+                <div>
+                  <p class="font-bold small">● In progress</p>
+                  <p class="small text-tertiary">Work is currently underway</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot pending"></span>
+                <div>
+                  <p class="font-semibold small text-tertiary">○ Resolved</p>
+                </div>
+              </div>
+            </div>
+            <div class="card card-sm mt-20">
+              <p class="small text-secondary">We'll notify you when the status changes.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== VERIFICATION ===== -->
+        <section id="verification" class="content-section">
+          <h2 class="mb-16">Why “Verifying” Matters</h2>
+          <p class="body-base text-secondary mb-20">
+            A report can be genuine — or it can be duplicate, outdated, incorrectly located, already resolved, or false.
+          </p>
+          <div class="grid-2">
+            <div class="card" style="border-color:var(--danger);">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--danger);">Don't use</p>
+              <p class="font-bold" style="font-size:1.05rem;">Reported → Resolved</p>
+            </div>
+            <div class="card" style="border-color:var(--success);">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--success);">Use</p>
+              <p class="font-bold" style="line-height:1.5;">Received → Verifying → Assigned → In Progress → Resolved</p>
+            </div>
+          </div>
+          <p class="body-base text-secondary mt-16">
+            This makes the system more trustworthy — the UI never implies that every citizen submission is automatically confirmed.
+          </p>
+        </section>
+
+        <!-- ===== PRIVACY ===== -->
+        <section id="privacy" class="content-section">
+          <h2 class="mb-16">Privacy Decision</h2>
+          <div class="card mb-16">
+            <p class="small text-tertiary font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em;">Problem</p>
+            <p class="body-base text-secondary" style="line-height:1.7;">
+              A public feed saying <em>“Pothole reported 100m away”</em> could potentially allow people to infer who reported it in a small neighborhood.
+            </p>
+          </div>
+          <div class="grid-2 mb-16">
+            <div class="card" style="border-color:var(--danger);">
+              <p class="small font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--danger);">Don't publicly expose</p>
+              <ul style="display:flex; flex-direction:column; gap:8px;">
+                <li class="small text-secondary">✕ Reporter identity</li>
+                <li class="small text-secondary">✕ Exact home / location information</li>
+                <li class="small text-secondary">✕ Unverified individual complaints</li>
+              </ul>
+            </div>
+            <div class="card" style="border-color:var(--success);">
+              <p class="small font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--success);">Instead, show</p>
+              <ul style="display:flex; flex-direction:column; gap:8px;">
+                <li class="small text-secondary">✓ Aggregated community progress</li>
+                <li class="small text-secondary">✓ Verified / processed outcomes</li>
+                <li class="small text-secondary">✓ Approximate areas where appropriate</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-sm" style="display:flex; align-items:flex-start; gap:14px;">
+            <span class="material-icons accent-text" style="font-size:1.6rem; min-width:30px;">lock</span>
+            <p class="small text-secondary" style="line-height:1.6;">
+              <strong class="text-primary">Solution:</strong> Don't expose individual citizen reports publicly. Demonstrate civic activity without unnecessarily exposing citizens.
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== COMMUNITY PROGRESS ===== -->
+        <section id="community" class="content-section">
+          <h2 class="mb-16">Community Progress</h2>
+          <p class="body-base text-secondary mb-20">
+            This replaces the original “Recent Reports in Your Area” idea.
+          </p>
+          <div class="grid-2 mb-16">
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.8rem; display:block; margin-bottom:8px;">visibility_off</span>
+              <h4 class="mb-8">Uncertainty 1 — Privacy</h4>
+              <p class="small text-secondary">Who reported it?</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.8rem; display:block; margin-bottom:8px;">fact_check</span>
+              <h4 class="mb-8">Uncertainty 2 — Authenticity</h4>
+              <p class="small text-secondary">Is the report actually real?</p>
+            </div>
+          </div>
+          <div class="card" style="border-color:var(--accent);">
+            <p class="small text-tertiary font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em;">Community Progress</p>
+            <p class="font-bold" style="font-size:1.3rem; color:var(--accent); margin-bottom:14px;">24 issues addressed this month</p>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div class="flow-step">
+                <span class="material-icons" style="font-size:1.2rem; color:var(--success);">lightbulb</span>
+                <span class="small">Streetlight repaired · Koramangala · 2 days ago</span>
+              </div>
+              <div class="flow-step">
+                <span class="material-icons" style="font-size:1.2rem; color:var(--success);">delete</span>
+                <span class="small">Garbage cleared · Adugodi · 4 days ago</span>
+              </div>
+            </div>
+            <p class="small text-secondary mt-16">
+              The public Home feed focuses on processed / verified civic outcomes — not raw citizen submissions.
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== INFORMATION ARCHITECTURE ===== -->
+        <section id="ia" class="content-section">
+          <h2 class="mb-16">Information Architecture</h2>
+          <p class="body-base text-secondary mb-20">
+            Keep this very simple. The <strong class="text-primary">Report an issue</strong> CTA should remain the dominant action.
+          </p>
+          <div class="grid-2">
+            <div class="card">
+              <p class="small text-tertiary font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em;">Bottom navigation</p>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;">home</span><span class="font-semibold">Home</span></div>
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;"> </span><span class="font-semibold">Reports</span></div>
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;">groups</span><span class="font-semibold">Community</span></div>
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;">person</span><span class="font-semibold">Profile</span></div>
+              </div>
+            </div>
+            <div class="card" style="border-color:var(--accent);">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--accent);">Simplified for the  </p>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;">home</span><span class="font-semibold">Home</span></div>
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;"> </span><span class="font-semibold">Reports</span></div>
+                <div class="flow-step"><span class="material-icons accent-text" style="font-size:1.2rem;">person</span><span class="font-semibold">Profile</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== MVP ===== -->
+        <section id="mvp" class="content-section">
+          <h2 class="mb-16">MVP</h2>
+          <p class="body-base text-secondary mb-20">
+            Scope required by the   — three pillars only.
+          </p>
+          <div class="grid-auto">
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:2rem; display:block; margin-bottom:10px;">campaign</span>
+              <h4 class="mb-12">Reporting</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Current location</li>
+                <li class="small text-secondary">• Manual location selection</li>
+                <li class="small text-secondary">• Issue categories</li>
+                <li class="small text-secondary">• Photo upload</li>
+                <li class="small text-secondary">• Optional description</li>
+                <li class="small text-secondary">• Review</li>
+                <li class="small text-secondary">• Submit</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:2rem; display:block; margin-bottom:10px;">timeline</span>
+              <h4 class="mb-12">Tracking</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Report ID</li>
+                <li class="small text-secondary">• Status timeline</li>
+                <li class="small text-secondary">• Last updated time</li>
+                <li class="small text-secondary">• Notifications</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:2rem; display:block; margin-bottom:10px;">verified_user</span>
+              <h4 class="mb-12">Trust</h4>
+              <ul style="display:flex; flex-direction:column; gap:7px;">
+                <li class="small text-secondary">• Verification state</li>
+                <li class="small text-secondary">• Privacy messaging</li>
+                <li class="small text-secondary">• Community progress</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== FUTURE FEATURES ===== -->
+        <section id="future" class="content-section">
+          <h2 class="mb-16">Future Opportunities</h2>
+          <p class="body-base text-secondary mb-20">
+            Deliberately kept out of the MVP.
+          </p>
+          <div class="grid-auto">
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">content_copy</span>
+              <h4 class="mb-8">Smart Duplicate Detection</h4>
+              <p class="small text-secondary">If multiple citizens report the same issue — “12 citizens reported an issue at this location” — the system consolidates them into one civic issue.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">auto_awesome</span>
+              <h4 class="mb-8">AI-Assisted Classification</h4>
+              <p class="small text-secondary">Photo + description can help suggest pothole, garbage, streetlight or water leak. The citizen should always be able to correct it.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">alt_route</span>
+              <h4 class="mb-8">Smart Routing</h4>
+              <p class="small text-secondary">Automatically determine Ward → Department → Responsible team.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">escalator_warning</span>
+              <h4 class="mb-8">Escalation</h4>
+              <p class="small text-secondary">If an issue remains unresolved beyond its expected timeline — escalate issue.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">compare</span>
+              <h4 class="mb-8">Resolution Proof</h4>
+              <p class="small text-secondary">Department uploads before/after evidence. The citizen can verify: “Is this issue actually resolved?”</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== TRADE-OFFS ===== -->
+        <section id="tradeoffs" class="content-section">
+          <h2 class="mb-16">Trade-offs</h2>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div class="card">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                <span class="material-icons accent-text" style="font-size:1.5rem;">balance</span>
+                <h4>1 · Speed vs Information</h4>
+              </div>
+              <p class="small text-secondary mb-8"><strong class="text-primary">Decision:</strong> Make descriptions optional.</p>
+              <p class="small text-secondary"><strong class="text-primary">Why:</strong> Most users shouldn't have to write a detailed complaint when location + category + photo provide enough initial context.</p>
+            </div>
+            <div class="card">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                <span class="material-icons accent-text" style="font-size:1.5rem;">visibility_off</span>
+                <h4>2 · Transparency vs Privacy</h4>
+              </div>
+              <p class="small text-secondary mb-8"><strong class="text-primary">Decision:</strong> Don't show individual raw reports publicly.</p>
+              <p class="small text-secondary"><strong class="text-primary">Why:</strong> Transparency should expose civic progress, not citizen identity.</p>
+            </div>
+            <div class="card">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                <span class="material-icons accent-text" style="font-size:1.5rem;">fact_check</span>
+                <h4>3 · Accuracy vs Friction</h4>
+              </div>
+              <p class="small text-secondary mb-8"><strong class="text-primary">Decision:</strong> Verification happens after submission.</p>
+              <p class="small text-secondary"><strong class="text-primary">Why:</strong> Asking citizens to provide excessive proof would make reporting slower.</p>
+            </div>
+            <div class="card">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                <span class="material-icons accent-text" style="font-size:1.5rem;">account_balance</span>
+                <h4>4 · Simplicity vs Administrative Precision</h4>
+              </div>
+              <p class="small text-secondary mb-8"><strong class="text-primary">Decision:</strong> Hide ward / corporation / department complexity.</p>
+              <p class="small text-secondary"><strong class="text-primary">Why:</strong> The system should translate citizen input into administrative routing.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== SUCCESS METRICS ===== -->
+        <section id="metrics" class="content-section">
+          <h2 class="mb-16">Success Metrics</h2>
+          <p class="body-base text-secondary mb-20">
+            Not just “number of downloads” — that's a weak metric. Use a funnel.
+          </p>
+
+          <div class="card mb-20" style="border-color:var(--accent);">
+            <p class="small font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--accent);">Primary metric</p>
+            <h4 class="mb-8" style="font-size:1.2rem;">Report Completion Rate</h4>
+            <p class="small text-secondary">Started report → Successfully submitted report. This measures whether the experience is actually frictionless.</p>
+          </div>
+
+          <p class="small text-tertiary font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em;">Secondary metrics</p>
+          <div class="grid-auto">
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">timer</span>
+              <h4 class="mb-8">Time to Report</h4>
+              <p class="small text-secondary">Tap Report → Submit. Target: reduce median reporting time.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">trending_down</span>
+              <h4 class="mb-8">Drop-off Rate</h4>
+              <p class="small text-secondary">Location → Issue type → Photo → Review → Submit. Where are users abandoning?</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">verified</span>
+              <h4 class="mb-8">Verification Rate</h4>
+              <p class="small text-secondary">% of submitted reports that become verified. Monitors report quality.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">task_alt</span>
+              <h4 class="mb-8">Resolution Rate</h4>
+              <p class="small text-secondary">% of verified reports eventually resolved.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">hourglass_bottom</span>
+              <h4 class="mb-8">Time to Resolution</h4>
+              <p class="small text-secondary">Verified → Resolved. Measures operational effectiveness, not just UI performance.</p>
+            </div>
+            <div class="card">
+              <span class="material-icons accent-text" style="font-size:1.7rem; display:block; margin-bottom:8px;">sentiment_satisfied</span>
+              <h4 class="mb-8">Trust Metric</h4>
+              <p class="small text-secondary">After resolution: “I understand what happened to my report.” Measured via a lightweight survey.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== SUCCESS FRAMEWORK ===== -->
+        <section id="framework" class="content-section">
+          <h2 class="mb-16">Success Framework</h2>
+          <div class="card">
+            <div style="text-align:center; margin-bottom:20px;">
+              <span style="display:inline-block; padding:10px 28px; background:var(--accent); color:#fff; border-radius:10px; font-weight:700; letter-spacing:0.08em; font-size:0.9rem;">SUCCESS</span>
+            </div>
+            <div class="grid-2">
+              <div class="card card-sm">
+                <p class="font-bold small mb-12" style="letter-spacing:0.06em; color:var(--accent);">EXPERIENCE</p>
+                <ul style="display:flex; flex-direction:column; gap:8px;">
+                  <li class="small text-secondary">• Completion rate</li>
+                  <li class="small text-secondary">• Time to report</li>
+                  <li class="small text-secondary">• Drop-off</li>
+                </ul>
+              </div>
+              <div class="card card-sm">
+                <p class="font-bold small mb-12" style="letter-spacing:0.06em; color:var(--accent);">OUTCOME</p>
+                <ul style="display:flex; flex-direction:column; gap:8px;">
+                  <li class="small text-secondary">• Verification rate</li>
+                  <li class="small text-secondary">• Resolution rate</li>
+                  <li class="small text-secondary">• Time to resolution</li>
+                </ul>
+              </div>
+            </div>
+            <div style="text-align:center; margin:18px 0; color:var(--text-tertiary); font-size:1.3rem;">↓</div>
+            <div class="card card-sm" style="text-align:center;">
+              <p class="font-bold small mb-12" style="letter-spacing:0.06em; color:var(--accent);">TRUST</p>
+              <p class="small text-secondary">User satisfaction · Status clarity</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== LEARNINGS ===== -->
+        <section id="learnings" class="content-section">
+          <h2 class="mb-16">What I Learned From Existing Products</h2>
+          <p class="body-base text-secondary mb-20">
+            Existing systems often expose system complexity. Users may encounter:
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;">
+            <span class="tag">Departments</span>
+            <span class="tag">Wards</span>
+            <span class="tag">Corporations</span>
+            <span class="tag">Categories</span>
+            <span class="tag">Subcategories</span>
+            <span class="tag">Forms</span>
+            <span class="tag">Coordinates</span>
+          </div>
+          <div class="card" style="border-color:var(--accent); text-align:center; padding:28px;">
+            <p class="small font-bold mb-8" style="text-transform:uppercase; letter-spacing:0.06em; color:var(--accent);">My approach</p>
+            <p style="font-size:1.3rem; font-weight:700; line-height:1.5;">Citizens report problems.<br />The system handles bureaucracy.</p>
+          </div>
+        </section>
+
+        <!-- ===== BEFORE VS AFTER ===== -->
+        <section id="beforeafter" class="content-section">
+          <h2 class="mb-16">Before vs After</h2>
+          <div class="grid-2">
+            <div class="card">
+              <p class="small text-tertiary font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em;">Existing experience</p>
+              <div style="display:flex; flex-direction:column; gap:5px; font-size:0.88rem; color:var(--text-secondary);">
+                <span>Open app</span>
+                <span class="text-tertiary">↓</span>
+                <span>Understand app</span>
+                <span class="text-tertiary">↓</span>
+                <span>Find complaint</span>
+                <span class="text-tertiary">↓</span>
+                <span>Choose department</span>
+                <span class="text-tertiary">↓</span>
+                <span>Choose category</span>
+                <span class="text-tertiary">↓</span>
+                <span>Enter address</span>
+                <span class="text-tertiary">↓</span>
+                <span>Enter details</span>
+                <span class="text-tertiary">↓</span>
+                <span>Upload</span>
+                <span class="text-tertiary">↓</span>
+                <span>Submit</span>
+                <span class="text-tertiary">↓</span>
+                <span style="font-style:italic;">Hope something happens</span>
+              </div>
+            </div>
+            <div class="card" style="border-color:var(--accent);">
+              <p class="small font-bold mb-12" style="text-transform:uppercase; letter-spacing:0.05em; color:var(--accent);">Proposed experience</p>
+              <div style="display:flex; flex-direction:column; gap:5px; font-size:0.88rem; color:var(--text-secondary);">
+                <span>See problem</span>
+                <span class="text-tertiary">↓</span>
+                <span>Report</span>
+                <span class="text-tertiary">↓</span>
+                <span>Where?</span>
+                <span class="text-tertiary">↓</span>
+                <span>What happened?</span>
+                <span class="text-tertiary">↓</span>
+                <span>Submit</span>
+                <span class="text-tertiary">↓</span>
+                <span style="font-weight:700; color:var(--accent);">Track progress</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== UX HYPOTHESIS ===== -->
+        <section id="hypothesis" class="content-section">
+          <h2 class="mb-16">Core UX Hypothesis</h2>
+          <div class="card" style="border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:26px 28px;">
+            <p class="body-large text-primary" style="line-height:1.7; font-style:italic;">
+              “If citizens can report an issue using only location, issue type and optional evidence, while receiving clear post-submission status updates, they will be able to complete civic reports with less cognitive effort and greater confidence.”
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== PROTOTYPE FLOW ===== -->
+        <section id="prototype" class="content-section">
+          <h2 class="mb-16">Prototype Flow</h2>
+          <p class="body-base text-secondary mb-20">
+            Don't prototype everything. Create this exact clickable path:
+          </p>
+          <div class="card">
+            <div style="display:flex; flex-direction:column; gap:5px; font-size:0.9rem; color:var(--text-secondary);">
+              <span class="font-semibold">HOME</span>
+              <span class="text-tertiary">↓</span>
+              <span>Report an issue</span>
+              <span class="text-tertiary">↓</span>
+              <span>Use current location</span>
+              <span class="text-tertiary">↓</span>
+              <span>Pothole</span>
+              <span class="text-tertiary">↓</span>
+              <span>Add photo</span>
+              <span class="text-tertiary">↓</span>
+              <span>Continue</span>
+              <span class="text-tertiary">↓</span>
+              <span>Review</span>
+              <span class="text-tertiary">↓</span>
+              <span>Submit report</span>
+              <span class="text-tertiary">↓</span>
+              <span>Report received</span>
+              <span class="text-tertiary">↓</span>
+              <span>View report details</span>
+              <span class="text-tertiary">↓</span>
+              <span class="font-semibold accent-text">Tracking</span>
+            </div>
+          </div>
+          <p class="body-base text-secondary mt-20 mb-12">
+            Then make the status timeline visually change:
+          </p>
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px;">
+            <span style="padding:8px 16px; background:var(--card-bg); border:1px solid var(--success); border-radius:20px; font-size:0.85rem; font-weight:600;">Received</span>
+            <span class="text-tertiary">→</span>
+            <span style="padding:8px 16px; background:var(--card-bg); border:1px solid var(--success); border-radius:20px; font-size:0.85rem; font-weight:600;">Verifying</span>
+            <span class="text-tertiary">→</span>
+            <span style="padding:8px 16px; background:var(--card-bg); border:1px solid var(--success); border-radius:20px; font-size:0.85rem; font-weight:600;">Assigned</span>
+            <span class="text-tertiary">→</span>
+            <span style="padding:8px 16px; background:var(--card-bg); border:1px solid var(--accent); border-radius:20px; font-size:0.85rem; font-weight:600; color:var(--accent);">In Progress</span>
+            <span class="text-tertiary">→</span>
+            <span style="padding:8px 16px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:20px; font-size:0.85rem; font-weight:600; color:var(--text-tertiary);">Resolved</span>
+          </div>
+          <p class="small text-tertiary mt-16">
+            You can prototype one active report rather than building the entire application.
+          </p>
+        </section>
+
+        <!-- ===== 4 HERO SCREENS ===== -->
+        <section id="hero-screens" class="content-section">
+          <h2 class="mb-16">The 4 Hero Screens</h2>
+          <p class="body-base text-secondary mb-20">
+            Don't show 12 polished screens to the evaluator. These four tell the entire story.
+          </p>
+          <div class="grid-auto">
+            <div class="card">
+              <span style="font-weight:800; font-size:1.2rem; color:var(--accent); display:block; margin-bottom:10px;">01</span>
+              <h4 class="mb-8">Home</h4>
+              <p class="small text-secondary">Report an issue + Community progress</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.2rem; color:var(--accent); display:block; margin-bottom:10px;">02</span>
+              <h4 class="mb-8">Location &amp; Issue Type</h4>
+              <p class="small text-secondary">Fast reporting</p>
+            </div>
+            <div class="card">
+              <span style="font-weight:800; font-size:1.2rem; color:var(--accent); display:block; margin-bottom:10px;">03</span>
+              <h4 class="mb-8">Review &amp; Submit</h4>
+              <p class="small text-secondary">Minimal information + privacy</p>
+            </div>
+            <div class="card" style="border-color:var(--accent);">
+              <span style="font-weight:800; font-size:1.2rem; color:var(--accent); display:block; margin-bottom:10px;">04</span>
+              <h4 class="mb-8">Tracking</h4>
+              <p class="small text-secondary">Transparent progress</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PRESENTATION Q&A ===== -->
+        <section id="qa" class="content-section">
+          <h2 class="mb-16">Presentation Q&amp;A</h2>
+
+          <div class="qa-card" style="border-left:3px solid var(--accent);">
+            <h4>When they ask: “Tell us about your solution.”</h4>
+            <p>
+              “I approached the problem by looking at where civic apps currently place complexity. A citizen knows what they saw and where they saw it, but they shouldn't have to understand wards, corporations or departments to report it. So I designed the experience around a simple principle: ask the citizen only what they know and let the system handle the administrative complexity. I also introduced verification and privacy considerations so that transparency doesn't come at the cost of citizen safety.”
+            </p>
+          </div>
+
+          <div class="qa-card">
+            <h4>“Why didn't you show recent reports?”</h4>
+            <p>
+              “I initially considered showing recent reports in the user's area. But I identified two risks. First, a nearby report could potentially expose the reporter in a small community. Second, a submitted report isn't necessarily a verified issue. So I changed the public-facing section to Community Progress, which focuses on verified or processed civic outcomes rather than exposing raw citizen submissions.”
+            </p>
+          </div>
+
+          <div class="qa-card">
+            <h4>“Why is verification a separate status?”</h4>
+            <p>
+              “Because submission and truth are two different states. A report can be duplicated, incorrectly located, outdated or potentially invalid. I didn't want the UI to imply that every citizen submission is automatically confirmed. So I introduced a lightweight verification stage between receiving and assigning the report.”
+            </p>
+          </div>
+
+          <div class="qa-card">
+            <h4>“Why is the description optional?”</h4>
+            <p>
+              “Because the goal is frictionless reporting. Location, issue category and a photo can provide substantial initial context. Making a detailed written description mandatory would increase cognitive load and potentially cause abandonment.”
+            </p>
+          </div>
+
+          <div class="qa-card">
+            <h4>“Why not show the department?”</h4>
+            <p>
+              “Because that's system complexity rather than user value. The citizen knows there is a pothole; they don't necessarily know which department or corporation owns that responsibility. I would let the backend route the report automatically.”
+            </p>
+          </div>
+
+          <div class="qa-card">
+            <h4>“What would you build next?”</h4>
+            <p>
+              “My next priority would be duplicate detection and resolution verification. If multiple citizens report the same issue, the system could consolidate those reports instead of creating duplicate work. And when an issue is marked resolved, I would provide before-and-after evidence and optionally ask the citizen to confirm whether the problem was actually fixed.”
+            </p>
+          </div>
+
+          <div class="qa-card">
+            <h4>“Where could AI help?”</h4>
+            <p>
+              “AI could support the workflow rather than define it. For example, it could classify an uploaded image as a pothole, garbage issue or streetlight issue, detect likely duplicate reports and help route the issue to the correct department. But the citizen should always be able to correct the system's suggestion.”
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== COMPARISON TABLE ===== -->
+        <section id="comparison" class="content-section">
+          <h2 class="mb-16">Competitor Analysis — Final</h2>
+          <div style="overflow-x:auto;">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Existing civic apps</th>
+                  <th>My approach</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Primary action</td>
+                  <td>Multiple modules</td>
+                  <td>Report an issue</td>
+                </tr>
+                <tr>
+                  <td>Information</td>
+                  <td>Often form-heavy</td>
+                  <td>Progressive disclosure</td>
+                </tr>
+                <tr>
+                  <td>Administrative data</td>
+                  <td>Visible to user</td>
+                  <td>System-managed</td>
+                </tr>
+                <tr>
+                  <td>Location</td>
+                  <td>Manual / detail-heavy in some flows</td>
+                  <td>Current location first</td>
+                </tr>
+                <tr>
+                  <td>Evidence</td>
+                  <td>Photo supported</td>
+                  <td>Photo encouraged, description optional</td>
+                </tr>
+                <tr>
+                  <td>Verification</td>
+                  <td>Not always clearly separated</td>
+                  <td>Explicit verification state</td>
+                </tr>
+                <tr>
+                  <td>Tracking</td>
+                  <td>Complaint / status</td>
+                  <td>Progress timeline</td>
+                </tr>
+                <tr>
+                  <td>Public information</td>
+                  <td>Individual complaint-oriented</td>
+                  <td>Community progress</td>
+                </tr>
+                <tr>
+                  <td>Privacy</td>
+                  <td>Needs careful handling</td>
+                  <td>Reporter not publicly exposed</td>
+                </tr>
+                <tr>
+                  <td>Resolution</td>
+                  <td>Status-focused</td>
+                  <td>Outcome-focused</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-tertiary mt-16">
+            For factual feature claims: BBMP's official material describes Sahaaya as a unified grievance platform with multiple departments and status tracking, while the Swachhata platform demonstrates photo/location-based reporting and status notifications. Bengaluru's official civic portal currently lists SAHAAYA 2.0 (Public Grievance) among its e-services — so it should be referred to as a current civic grievance channel, not an abandoned product.
+          </p>
+        </section>
+
+        <!-- ===== FINAL / THANK YOU ===== -->
+        <section id="thankyou" class="content-section" style="text-align:center; padding:40px 0 20px;">
+          <div style="max-width:640px; margin:0 auto;">
+            <h2 style="font-size:2rem; font-weight:700; margin-bottom:12px;">Frictionless Civic Complaint</h2>
+            <p style="font-weight:600; font-size:1.1rem; color:var(--accent); margin-bottom:8px;">
+              Report simply. Track transparently. Protect citizens.
+            </p>
+            <p style="font-weight:700; font-size:1rem; color:var(--text-primary); margin-bottom:24px;">
+              Report → Verify → Assign → Resolve
+            </p>
+            <p style="color:var(--text-secondary); font-size:1rem; margin-bottom:8px;">
+              The citizen reports the problem.<br />The system handles the complexity.
+            </p>
+            <p style="font-weight:600; font-size:1.1rem; color:var(--text-primary); margin-top:28px;">Designed by</p>
+            <p style="font-size:1.4rem; font-weight:700; color:var(--accent);">Sagar Shivaji</p>
+            <p style="color:var(--text-tertiary); font-size:0.9rem;">Product Designer</p>
+          </div>
+        </section>
+
+      </div><!-- /project-content-block -->
+    </div><!-- /project-layout -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© Sagar Shivaji 2026 · Frictionless Civic Complaint</p>
+    </footer>
+
+  </div><!-- /container -->
+
+  <!-- Simple active nav highlight -->
+  <script>
+    (function () {
+      const sections = document.querySelectorAll('.content-section');
+      const navLinks = document.querySelectorAll('.sticky-nav a');
+
+      function updateActive() {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActive);
+      updateActive();
+    })();
+  </script>
+
+</body>
+</html>
